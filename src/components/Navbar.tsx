@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { ShoppingCart, ChevronDown, ChevronRight } from "lucide-react"
+import { ShoppingCart, ChevronDown, ChevronRight, Menu, X } from "lucide-react"
 
 // Dữ liệu menu đa cấp
 const productMenuData = [
@@ -136,7 +136,7 @@ function NavItem({ children, href, active, isHome = false, isProduct = false, ha
   return (
     <a
       href={href}
-      className={`px-4 py-2 mx-1 font-medium relative group ${
+      className={`px-3 py-1.5 mx-1.5 text-sm font-medium relative group ${
         isProduct
           ? "text-red-600 border border-red-600 rounded-md"
           : isHome
@@ -146,19 +146,19 @@ function NavItem({ children, href, active, isHome = false, isProduct = false, ha
     >
       <div className="flex items-center">
         {children}
-        {hasSubmenu && <ChevronDown className="ml-1 w-4 h-4" />}
+        {hasSubmenu && <ChevronDown className="ml-1 w-3 h-3" />}
       </div>
 
       {isHome && (
         <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center">
-          <ChevronDown className="w-5 h-5 text-red-600" />
+          <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
       )}
       <div
         className={`absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity`}
       >
-        <ChevronDown className="w-5 h-5 text-red-600" />
+        <ChevronDown className="w-4 h-4 text-red-600" />
         <div className="w-full h-1 bg-red-600"></div>
       </div>
     </a>
@@ -199,13 +199,16 @@ function ProductMenu() {
 
   return (
     <div className="group relative" ref={productMenuRef}>
-      <a href="/san-pham" className="px-4 py-2 mx-1 font-medium relative text-red-600 border border-red-600 rounded-md">
+      <a
+        href="/san-pham"
+        className="px-3 py-1.5 mx-1.5 text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
+      >
         SẢN PHẨM
       </a>
 
       {/* Indicator for hover - đảm bảo căn chỉnh giống các mục khác */}
-      <div className="absolute bottom-[-23px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
-        <ChevronDown className="w-5 h-5 text-red-600" />
+      <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <ChevronDown className="w-4 h-4 text-red-600" />
         <div className="w-full h-1 bg-red-600"></div>
       </div>
 
@@ -264,17 +267,149 @@ function ProductMenu() {
   )
 }
 
+// Menu mobile
+function MobileMenu() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [activeItem, setActiveItem] = useState("home")
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+
+  return (
+    <div className="lg:hidden">
+      {/* Nút menu */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-2 text-gray-700"
+        aria-label={isOpen ? "Đóng menu" : "Mở menu"}
+      >
+        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
+      {/* Menu mobile */}
+      <div
+        className={`fixed inset-0 bg-white z-50 transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"} flex flex-col`}
+      >
+        {/* Header menu */}
+        <div className="flex justify-between items-center p-3 border-b">
+          <div className="w-36">
+            <img src="/bic-logo.png" alt="BIC Logo" className="h-auto" />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <ShoppingCart className="w-6 h-6" />
+              <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                0
+              </span>
+            </div>
+            <button onClick={() => setIsOpen(false)} className="p-2 text-gray-700" aria-label="Đóng menu">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        {/* Content menu - sử dụng flex-1 để tự động điều chỉnh chiều cao */}
+        <div className="p-3 pb-0 overflow-y-auto flex-1">
+          <div className="text-gray-600 mb-3">ĐĂNG NHẬP</div>
+
+          <a href="/dang-ky" className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3">
+            ĐĂNG KÝ
+          </a>
+
+          <nav className="flex flex-col">
+            <a
+              href="/"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "home" ? "text-red-600" : "text-gray-700"}`}
+              onMouseEnter={() => setHoveredItem("home")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              TRANG CHỦ
+              {activeItem === "home" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "home" && activeItem !== "home" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </a>
+
+            <a
+              href="/san-pham"
+              className="py-3 border-b border-gray-200 relative text-red-600"
+              onMouseEnter={() => setHoveredItem("products")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              SẢN PHẨM
+              {activeItem === "products" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "products" && activeItem !== "products" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </a>
+
+            <a
+              href="/gioi-thieu"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "about" ? "text-red-600" : "text-gray-700"}`}
+              onMouseEnter={() => setHoveredItem("about")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              GIỚI THIỆU
+              {activeItem === "about" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "about" && activeItem !== "about" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </a>
+
+            <a
+              href="/tin-tuc"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "news" ? "text-red-600" : "text-gray-700"}`}
+              onMouseEnter={() => setHoveredItem("news")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              TIN TỨC
+              {activeItem === "news" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "news" && activeItem !== "news" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </a>
+
+            <a
+              href="/khuyen-mai"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "promotions" ? "text-red-600" : "text-gray-700"}`}
+              onMouseEnter={() => setHoveredItem("promotions")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              KHUYẾN MÃI
+              {activeItem === "promotions" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "promotions" && activeItem !== "promotions" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </a>
+
+            <a
+              href="/lien-he"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "contact" ? "text-red-600" : "text-gray-700"}`}
+              onMouseEnter={() => setHoveredItem("contact")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              LIÊN HỆ
+              {activeItem === "contact" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "contact" && activeItem !== "contact" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm h-[82px]">
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo - reduced size */}
-        <div className="w-48">
-          <img src="/bic-logo.png" alt="BIC Logo" width={180} height={45} className="h-auto" />
+        <div className="w-40">
+          <img src="/bic-logo.png" alt="BIC Logo" width={150} height={38} className="h-auto" />
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center">
+        {/* Navigation - hiển thị trên desktop */}
+        <nav className="hidden lg:flex items-center justify-center flex-1 mx-4">
           <NavItem href="/" active={true} isHome={true}>
             TRANG CHỦ
           </NavItem>
@@ -293,20 +428,31 @@ export default function Navbar() {
           </NavItem>
         </nav>
 
-        {/* Auth & Cart */}
-        <div className="flex items-center gap-4">
-          <a href="/dang-nhap" className="px-4 py-2 text-sm font-medium">
+        {/* Auth & Cart - hiển thị trên desktop */}
+        <div className="hidden lg:flex items-center gap-3">
+          <a href="/dang-nhap" className="px-3 py-1.5 text-sm font-medium">
             ĐĂNG NHẬP
           </a>
-          <a href="/dang-ky" className="px-4 py-2 text-sm font-medium border border-gray-300 rounded-md">
+          <a href="/dang-ky" className="px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md">
             ĐĂNG KÝ
           </a>
-          <div className="relative">
-            <ShoppingCart className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <div className="relative ml-2">
+            <ShoppingCart className="w-5 h-5" />
+            <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               0
             </span>
           </div>
+        </div>
+
+        {/* Menu mobile - hiển thị trên tablet và mobile */}
+        <div className="flex lg:hidden items-center gap-4">
+          <div className="relative">
+            <ShoppingCart className="w-5 h-5" />
+            <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              0
+            </span>
+          </div>
+          <MobileMenu />
         </div>
       </div>
     </header>
