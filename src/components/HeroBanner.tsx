@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
@@ -15,7 +13,6 @@ export default function HeroBanner() {
   const animationID = useRef<number | null>(null)
   const autoSlideInterval = useRef<NodeJS.Timeout | null>(null)
 
-  // Auto-rotate slides
   useEffect(() => {
     startAutoSlide()
 
@@ -48,12 +45,10 @@ export default function HeroBanner() {
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index)
-    // Reset auto slide timer when manually changing slides
     pauseAutoSlide()
     startAutoSlide()
   }
 
-  // Improved swipe functionality
   const getPositionX = (event: MouseEvent | TouchEvent) => {
     return "touches" in event ? event.touches[0].clientX : (event as MouseEvent).clientX
   }
@@ -66,8 +61,7 @@ export default function HeroBanner() {
     if (animationID.current) {
       cancelAnimationFrame(animationID.current)
     }
-
-    // Prevent default behavior to avoid text selection during drag
+    
     if ("clientX" in event.nativeEvent) {
       event.preventDefault()
     }

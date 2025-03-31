@@ -22,7 +22,7 @@ export default function Footer() {
             {/* Cột trái - Thông tin công ty */}
             <div>
               <div className="mb-6">
-                <img src="/bic-logo.png" alt="BIC Logo" className="h-14 invert mb-1" />
+                <img src="/Footer-Logo.png" alt="BIC Logo" className="h-21 mb-1" />
                 <div className="text-sm">TỔNG CÔNG TY BẢO HIỂM BIDV</div>
               </div>
 

@@ -1,9 +1,6 @@
-"use client"
-
 import { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-// Dữ liệu sản phẩm bảo hiểm
 const insuranceProducts = [
   {
     id: "cyber-risk",
@@ -93,26 +90,24 @@ export default function ProductShowcase() {
   const [itemsPerRow, setItemsPerRow] = useState(3)
   const [itemWidth, setItemWidth] = useState(0)
 
-  // Chia sản phẩm thành 2 hàng chính xác
   const firstRowCount = Math.ceil(insuranceProducts.length / 2)
   const topRowProducts = insuranceProducts.slice(0, firstRowCount)
   const bottomRowProducts = insuranceProducts.slice(firstRowCount)
 
-  // Xác định số lượng sản phẩm hiển thị dựa trên kích thước màn hình
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        setItemsPerRow(3) // Desktop: 3 sản phẩm mỗi hàng
+        setItemsPerRow(3) 
       } else if (window.innerWidth >= 768) {
-        setItemsPerRow(2) // Tablet: 2 sản phẩm mỗi hàng
+        setItemsPerRow(2) 
       } else {
-        setItemsPerRow(1) // Mobile: 1 sản phẩm mỗi hàng
+        setItemsPerRow(1) 
       }
 
-      // Tính toán chiều rộng của mỗi item
+    
       if (containerRef.current) {
         const containerWidth = containerRef.current.clientWidth
-        const gap = 24 // gap-6 = 1.5rem = 24px
+        const gap = 24 
         const calculatedWidth = (containerWidth - gap * (itemsPerRow - 1)) / itemsPerRow
         setItemWidth(calculatedWidth)
       }
@@ -123,31 +118,26 @@ export default function ProductShowcase() {
     return () => window.removeEventListener("resize", handleResize)
   }, [itemsPerRow])
 
-  // Tính toán số slide tối đa dựa trên hàng có nhiều sản phẩm nhất
   const maxSlides = Math.max(0, topRowProducts.length - itemsPerRow)
 
-  // Di chuyển sang phải
   const nextSlide = () => {
     if (slideIndex < maxSlides) {
       setSlideIndex(slideIndex + 1)
     }
   }
 
-  // Di chuyển sang trái
   const prevSlide = () => {
     if (slideIndex > 0) {
       setSlideIndex(slideIndex - 1)
     }
   }
 
-  // Tính toán translateX dựa trên slide hiện tại
   const getTranslateX = () => {
     if (itemWidth === 0) return 0
-    const gapWidth = 24 // gap-6 = 1.5rem = 24px
+    const gapWidth = 24 
     return -slideIndex * (itemWidth + gapWidth)
   }
 
-  // Tạo danh sách sản phẩm cho một hàng
   const renderProductRow = (products: typeof insuranceProducts) => {
     return products.map((product) => (
       <div
@@ -181,10 +171,8 @@ export default function ProductShowcase() {
     ))
   }
 
-  // Kiểm tra xem có thể trượt sang phải không
   const canSlideNext = slideIndex < maxSlides
 
-  // Kiểm tra xem có thể trượt sang trái không
   const canSlidePrev = slideIndex > 0
 
   return (
@@ -193,7 +181,6 @@ export default function ProductShowcase() {
         <h2 className="text-center text-red-600 text-3xl font-bold mb-12">Sản phẩm Bảo hiểm trực tuyến BIC</h2>
 
         <div className="relative px-16">
-          {/* Navigation arrows */}
           <button
             onClick={prevSlide}
             className={`absolute left-[-10px] top-1/2 transform -translate-y-1/2 z-10 ${
@@ -216,10 +203,8 @@ export default function ProductShowcase() {
             <ChevronRight className="w-10 h-10" />
           </button>
 
-          {/* Slider container */}
           <div ref={containerRef} className="overflow-hidden">
             <div className="grid grid-rows-2 gap-6">
-              {/* Hàng 1 */}
               <div className="overflow-hidden">
                 <div
                   className="flex gap-6 transition-transform duration-500 ease-in-out"
@@ -229,7 +214,6 @@ export default function ProductShowcase() {
                 </div>
               </div>
 
-              {/* Hàng 2 */}
               <div className="overflow-hidden">
                 <div
                   className="flex gap-6 transition-transform duration-500 ease-in-out"

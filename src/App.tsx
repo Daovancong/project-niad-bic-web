@@ -1,27 +1,17 @@
-import Navbar from "./components/Navbar"
-import HeroBanner from "./components/HeroBanner"
-import ProductShowcase from "./components/ProductShowcase"
-import CustomerSupport from "./components/CustomerSupport"
-import AboutUs from "./components/AboutUs"
-import Contact from "./components/Contact"
-import News from "./components/News"
-import Footer from "./components/Footer"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import AboutPage from "./pages/AboutPage"
 import "./index.css"
 
 function App() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-      <div className="pt-[82px]">
-        <HeroBanner />
-        <ProductShowcase />
-        <CustomerSupport />
-        <AboutUs />
-        <Contact />
-        <News />
-        <Footer />
-      </div>
-    </main>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/gioi-thieu" element={<AboutPage />} />
+        {/* Thêm các route khác ở đây khi cần */}
+      </Routes>
+    </Router>
   )
 }
 

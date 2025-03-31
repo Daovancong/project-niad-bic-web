@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { Link, useLocation } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { ShoppingCart, ChevronDown, ChevronRight, Menu, X } from "lucide-react"
 
@@ -125,18 +125,18 @@ const productMenuData = [
 
 interface NavItemProps {
   children: React.ReactNode
-  href: string
+  to: string
   active: boolean
   isHome?: boolean
   isProduct?: boolean
   hasSubmenu?: boolean
 }
 
-function NavItem({ children, href, active, isHome = false, isProduct = false, hasSubmenu = false }: NavItemProps) {
+function NavItem({ children, to, active, isHome = false, isProduct = false, hasSubmenu = false }: NavItemProps) {
   return (
-    <a
-      href={href}
-      className={`px-3 py-1.5 mx-1.5 text-sm font-medium relative group ${
+    <Link
+      to={to}
+      className={`px-2 py-1.5 mx-1.5 text-xs lg:text-sm font-medium relative group ${
         isProduct
           ? "text-red-600 border border-red-600 rounded-md"
           : isHome
@@ -161,7 +161,7 @@ function NavItem({ children, href, active, isHome = false, isProduct = false, ha
         <ChevronDown className="w-4 h-4 text-red-600" />
         <div className="w-full h-1 bg-red-600"></div>
       </div>
-    </a>
+    </Link>
   )
 }
 
@@ -199,12 +199,12 @@ function ProductMenu() {
 
   return (
     <div className="group relative" ref={productMenuRef}>
-      <a
-        href="/san-pham"
-        className="px-3 py-1.5 mx-1.5 text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
+      <Link
+        to="/san-pham"
+        className="px-2 py-1.5 mx-1.5 text-xs lg:text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
       >
         SẢN PHẨM
-      </a>
+      </Link>
 
       {/* Indicator for hover - đảm bảo căn chỉnh giống các mục khác */}
       <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -225,15 +225,15 @@ function ProductMenu() {
               onMouseEnter={() => setActiveSubmenu(item.id)}
               onMouseLeave={() => setActiveSubmenu(null)}
             >
-              <a
-                href={item.href}
+              <Link
+                to={item.href}
                 className={`block px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${
                   activeSubmenu === item.id ? "text-red-600" : "hover:text-red-600"
                 }`}
               >
                 <span>{item.title}</span>
                 <ChevronRight className="w-4 h-4" />
-              </a>
+              </Link>
 
               {/* Second level dropdown - always show when parent is hovered */}
               {activeSubmenu === item.id && (
@@ -243,17 +243,17 @@ function ProductMenu() {
                     {item.subMenu && item.subMenu.length > 0 ? (
                       item.subMenu.map((subItem) => (
                         <li key={subItem.id}>
-                          <a href={subItem.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
+                          <Link to={subItem.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
                             {subItem.title}
-                          </a>
+                          </Link>
                         </li>
                       ))
                     ) : (
                       // If no submenu, repeat the parent item
                       <li>
-                        <a href={item.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
+                        <Link to={item.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
                           {item.title}
-                        </a>
+                        </Link>
                       </li>
                     )}
                   </ul>
@@ -270,7 +270,7 @@ function ProductMenu() {
 // Menu mobile
 function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState("home")
+  const location = useLocation()
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
 
   return (
@@ -310,88 +310,98 @@ function MobileMenu() {
         <div className="p-3 pb-0 overflow-y-auto flex-1">
           <div className="text-gray-600 mb-3">ĐĂNG NHẬP</div>
 
-          <a href="/dang-ky" className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3">
+          <Link to="/dang-ky" className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3">
             ĐĂNG KÝ
-          </a>
+          </Link>
 
           <nav className="flex flex-col">
-            <a
-              href="/"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "home" ? "text-red-600" : "text-gray-700"}`}
+            <Link
+              to="/"
+              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("home")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               TRANG CHỦ
-              {activeItem === "home" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "home" && activeItem !== "home" && (
+              {location.pathname === "/" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "home" && location.pathname !== "/" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </a>
+            </Link>
 
-            <a
-              href="/san-pham"
+            <Link
+              to="/san-pham"
               className="py-3 border-b border-gray-200 relative text-red-600"
               onMouseEnter={() => setHoveredItem("products")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               SẢN PHẨM
-              {activeItem === "products" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "products" && activeItem !== "products" && (
+              {location.pathname === "/san-pham" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </a>
+              {hoveredItem === "products" && location.pathname !== "/san-pham" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </Link>
 
-            <a
-              href="/gioi-thieu"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "about" ? "text-red-600" : "text-gray-700"}`}
+            <Link
+              to="/gioi-thieu"
+              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/gioi-thieu" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("about")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               GIỚI THIỆU
-              {activeItem === "about" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "about" && activeItem !== "about" && (
+              {location.pathname === "/gioi-thieu" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </a>
+              {hoveredItem === "about" && location.pathname !== "/gioi-thieu" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </Link>
 
-            <a
-              href="/tin-tuc"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "news" ? "text-red-600" : "text-gray-700"}`}
+            <Link
+              to="/tin-tuc"
+              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/tin-tuc" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("news")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               TIN TỨC
-              {activeItem === "news" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "news" && activeItem !== "news" && (
+              {location.pathname === "/tin-tuc" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </a>
+              {hoveredItem === "news" && location.pathname !== "/tin-tuc" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </Link>
 
-            <a
-              href="/khuyen-mai"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "promotions" ? "text-red-600" : "text-gray-700"}`}
+            <Link
+              to="/khuyen-mai"
+              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/khuyen-mai" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("promotions")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               KHUYẾN MÃI
-              {activeItem === "promotions" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "promotions" && activeItem !== "promotions" && (
+              {location.pathname === "/khuyen-mai" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </a>
+              {hoveredItem === "promotions" && location.pathname !== "/khuyen-mai" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </Link>
 
-            <a
-              href="/lien-he"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "contact" ? "text-red-600" : "text-gray-700"}`}
+            <Link
+              to="/lien-he"
+              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/lien-he" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("contact")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               LIÊN HỆ
-              {activeItem === "contact" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "contact" && activeItem !== "contact" && (
+              {location.pathname === "/lien-he" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </a>
+              {hoveredItem === "contact" && location.pathname !== "/lien-he" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
+            </Link>
           </nav>
         </div>
       </div>
@@ -400,43 +410,48 @@ function MobileMenu() {
 }
 
 export default function Navbar() {
+  const location = useLocation()
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm h-[82px]">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+      <div className="container mx-auto px-2 h-full flex items-center justify-between">
         {/* Logo - reduced size */}
-        <div className="w-40">
+        <div className="w-28 md:w-32 lg:w-36">
           <img src="/bic-logo.png" alt="BIC Logo" width={150} height={38} className="h-auto" />
         </div>
 
         {/* Navigation - hiển thị trên desktop */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 mx-4">
-          <NavItem href="/" active={true} isHome={true}>
+        <nav className="hidden lg:flex items-center justify-center flex-1 mx-2 xl:mx-3">
+          <NavItem to="/" active={location.pathname === "/"} isHome={location.pathname === "/"}>
             TRANG CHỦ
           </NavItem>
           <ProductMenu />
-          <NavItem href="/gioi-thieu" active={false}>
+          <NavItem to="/gioi-thieu" active={location.pathname === "/gioi-thieu"}>
             GIỚI THIỆU
           </NavItem>
-          <NavItem href="/tin-tuc" active={false}>
+          <NavItem to="/tin-tuc" active={location.pathname === "/tin-tuc"}>
             TIN TỨC
           </NavItem>
-          <NavItem href="/khuyen-mai" active={false}>
+          <NavItem to="/khuyen-mai" active={location.pathname === "/khuyen-mai"}>
             KHUYẾN MÃI
           </NavItem>
-          <NavItem href="/lien-he" active={false}>
+          <NavItem to="/lien-he" active={location.pathname === "/lien-he"}>
             LIÊN HỆ
           </NavItem>
         </nav>
 
         {/* Auth & Cart - hiển thị trên desktop */}
-        <div className="hidden lg:flex items-center gap-3">
-          <a href="/dang-nhap" className="px-3 py-1.5 text-sm font-medium">
+        <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <Link to="/dang-nhap" className="px-2 xl:px-3 py-1.5 text-xs xl:text-sm font-medium">
             ĐĂNG NHẬP
-          </a>
-          <a href="/dang-ky" className="px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md">
+          </Link>
+          <Link
+            to="/dang-ky"
+            className="px-2 xl:px-3 py-1.5 text-xs xl:text-sm font-medium border border-gray-300 rounded-md"
+          >
             ĐĂNG KÝ
-          </a>
-          <div className="relative ml-2">
+          </Link>
+          <div className="relative ml-1">
             <ShoppingCart className="w-5 h-5" />
             <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               0
