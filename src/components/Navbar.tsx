@@ -136,7 +136,7 @@ function NavItem({ children, to, active, isHome = false, isProduct = false, hasS
   return (
     <Link
       to={to}
-      className={`px-2 py-1.5 mx-1.5 text-xs lg:text-sm font-medium relative group ${
+      className={`px-3 py-1.5 mx-2 text-sm lg:text-base font-medium relative group ${
         isProduct
           ? "text-red-600 border border-red-600 rounded-md"
           : isHome
@@ -421,7 +421,7 @@ export default function Navbar() {
         </div>
 
         {/* Navigation - hiển thị trên desktop */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 mx-2 xl:mx-3">
+        <nav className="hidden lg:flex items-center justify-center flex-1 mx-4 xl:mx-6">
           <NavItem to="/" active={location.pathname === "/"} isHome={location.pathname === "/"}>
             TRANG CHỦ
           </NavItem>

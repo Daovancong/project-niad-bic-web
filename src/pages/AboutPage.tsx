@@ -7,16 +7,25 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen">
       <Navbar />
+      {/* Banner */}
+      <div className="w-full h-screen">
+        <img 
+          src="/banner-3.png" 
+          alt="Banner Giới thiệu" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       <div className="pt-[82px]">
         {/* Phần nội dung chính của trang Giới thiệu */}
-        <section className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="flex justify-center mb-6">
-              <img src="/bic-logo.png" alt="BIC Logo" className="h-14" />
+        <section className="py-6 bg-white">
+          <div className="mx-[90px] px-[15px]">
+            <div className="flex justify-center mb-3">
+              <img src="/bic-logo.png" alt="BIC Logo" className="h-28" />
             </div>
-            <h1 className="text-[45px] font-bold text-red-600 mb-6 text-center">Giới thiệu </h1>
+            <h1 className="text-[45px] font-bold text-red-600 mb-3 text-center">Giới thiệu </h1>
 
-            <div className="prose max-w-none text-gray-700">
+            <div className="prose max-w-none text-gray-700 space-y-3">
               <p className="mb-4 text-[20px]">
                 <strong className="text-red-600">BIC</strong> là website bán trực tuyến các sản phẩm bảo hiểm của Tổng
                 công ty Bảo hiểm BIDV (BIC). Sản phẩm bán trên website hướng tới các nhu cầu cá nhân, sẵn sàng phục vụ
