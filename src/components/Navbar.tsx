@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import { Link, useLocation } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { ShoppingCart, ChevronDown, ChevronRight, Menu, X } from "lucide-react"
 
@@ -125,22 +124,29 @@ const productMenuData = [
 
 interface NavItemProps {
   children: React.ReactNode
-  to: string
-  active: boolean
+  href: string
   isHome?: boolean
   isProduct?: boolean
   hasSubmenu?: boolean
+  isActive?: boolean
 }
 
-function NavItem({ children, to, active, isHome = false, isProduct = false, hasSubmenu = false }: NavItemProps) {
+function NavItem({
+  children,
+  href,
+  isHome = false,
+  isProduct = false,
+  hasSubmenu = false,
+  isActive = false,
+}: NavItemProps) {
   return (
-    <Link
-      to={to}
-      className={`px-3 py-1.5 mx-2 text-sm lg:text-base font-medium relative group ${
+    <a
+      href={href}
+      className={`px-2 py-1.5 mx-1 text-sm lg:text-base font-medium relative group ${
         isProduct
           ? "text-red-600 border border-red-600 rounded-md"
-          : isHome
-            ? "text-black"
+          : isActive
+            ? "text-red-600"
             : "text-gray-800 hover:text-red-600"
       }`}
     >
@@ -149,23 +155,26 @@ function NavItem({ children, to, active, isHome = false, isProduct = false, hasS
         {hasSubmenu && <ChevronDown className="ml-1 w-3 h-3" />}
       </div>
 
-      {isHome && (
+      {/* Hiển thị chỉ báo cho trang đang active */}
+      {isActive && (
         <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
       )}
-      <div
-        className={`absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity`}
-      >
-        <ChevronDown className="w-4 h-4 text-red-600" />
-        <div className="w-full h-1 bg-red-600"></div>
-      </div>
-    </Link>
+
+      {/* Hiển thị chỉ báo khi hover cho các trang không active */}
+      {!isActive && (
+        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <ChevronDown className="w-4 h-4 text-red-600" />
+          <div className="w-full h-1 bg-red-600"></div>
+        </div>
+      )}
+    </a>
   )
 }
 
-function ProductMenu() {
+function ProductMenu({ isActive = false }) {
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
   const productMenuRef = useRef<HTMLDivElement>(null)
   const [dropdownPosition, setDropdownPosition] = useState({ left: 0 })
@@ -199,18 +208,25 @@ function ProductMenu() {
 
   return (
     <div className="group relative" ref={productMenuRef}>
-      <Link
-        to="/san-pham"
-        className="px-2 py-1.5 mx-1.5 text-xs lg:text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
+      <a
+        href="/san-pham"
+        className="px-2 py-1.5 mx-1 text-sm lg:text-base font-medium relative text-red-600 border border-red-600 rounded-md"
       >
         SẢN PHẨM
-      </Link>
+      </a>
 
       {/* Indicator for hover - đảm bảo căn chỉnh giống các mục khác */}
-      <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
-        <ChevronDown className="w-4 h-4 text-red-600" />
-        <div className="w-full h-1 bg-red-600"></div>
-      </div>
+      {isActive ? (
+        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center">
+          <ChevronDown className="w-4 h-4 text-red-600" />
+          <div className="w-full h-1 bg-red-600"></div>
+        </div>
+      ) : (
+        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <ChevronDown className="w-4 h-4 text-red-600" />
+          <div className="w-full h-1 bg-red-600"></div>
+        </div>
+      )}
 
       {/* First level dropdown - positioned exactly at top of slider with correct horizontal position */}
       <div
@@ -225,15 +241,15 @@ function ProductMenu() {
               onMouseEnter={() => setActiveSubmenu(item.id)}
               onMouseLeave={() => setActiveSubmenu(null)}
             >
-              <Link
-                to={item.href}
+              <a
+                href={item.href}
                 className={`block px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${
                   activeSubmenu === item.id ? "text-red-600" : "hover:text-red-600"
                 }`}
               >
                 <span>{item.title}</span>
                 <ChevronRight className="w-4 h-4" />
-              </Link>
+              </a>
 
               {/* Second level dropdown - always show when parent is hovered */}
               {activeSubmenu === item.id && (
@@ -243,17 +259,17 @@ function ProductMenu() {
                     {item.subMenu && item.subMenu.length > 0 ? (
                       item.subMenu.map((subItem) => (
                         <li key={subItem.id}>
-                          <Link to={subItem.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
+                          <a href={subItem.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
                             {subItem.title}
-                          </Link>
+                          </a>
                         </li>
                       ))
                     ) : (
                       // If no submenu, repeat the parent item
                       <li>
-                        <Link to={item.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
+                        <a href={item.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
                           {item.title}
-                        </Link>
+                        </a>
                       </li>
                     )}
                   </ul>
@@ -270,8 +286,19 @@ function ProductMenu() {
 // Menu mobile
 function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false)
-  const location = useLocation()
+  const [activeItem, setActiveItem] = useState("")
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+
+  // Xác định trang hiện tại dựa trên đường dẫn
+  useEffect(() => {
+    const path = window.location.pathname
+    if (path === "/") setActiveItem("home")
+    else if (path.includes("/san-pham")) setActiveItem("products")
+    else if (path.includes("/gioi-thieu")) setActiveItem("about")
+    else if (path.includes("/tin-tuc")) setActiveItem("news")
+    else if (path.includes("/khuyen-mai")) setActiveItem("promotions")
+    else if (path.includes("/lien-he")) setActiveItem("contact")
+  }, [])
 
   return (
     <div className="lg:hidden">
@@ -310,98 +337,88 @@ function MobileMenu() {
         <div className="p-3 pb-0 overflow-y-auto flex-1">
           <div className="text-gray-600 mb-3">ĐĂNG NHẬP</div>
 
-          <Link to="/dang-ky" className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3">
+          <a href="/dang-ky" className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3">
             ĐĂNG KÝ
-          </Link>
+          </a>
 
           <nav className="flex flex-col">
-            <Link
-              to="/"
-              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/" ? "text-red-600" : "text-gray-700"}`}
+            <a
+              href="/"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "home" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("home")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               TRANG CHỦ
-              {location.pathname === "/" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
-              {hoveredItem === "home" && location.pathname !== "/" && (
+              {activeItem === "home" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "home" && activeItem !== "home" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-            </Link>
+            </a>
 
-            <Link
-              to="/san-pham"
-              className="py-3 border-b border-gray-200 relative text-red-600"
+            <a
+              href="/san-pham"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "products" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("products")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               SẢN PHẨM
-              {location.pathname === "/san-pham" && (
+              {activeItem === "products" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "products" && activeItem !== "products" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-              {hoveredItem === "products" && location.pathname !== "/san-pham" && (
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
-              )}
-            </Link>
+            </a>
 
-            <Link
-              to="/gioi-thieu"
-              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/gioi-thieu" ? "text-red-600" : "text-gray-700"}`}
+            <a
+              href="/gioi-thieu"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "about" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("about")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               GIỚI THIỆU
-              {location.pathname === "/gioi-thieu" && (
+              {activeItem === "about" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "about" && activeItem !== "about" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-              {hoveredItem === "about" && location.pathname !== "/gioi-thieu" && (
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
-              )}
-            </Link>
+            </a>
 
-            <Link
-              to="/tin-tuc"
-              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/tin-tuc" ? "text-red-600" : "text-gray-700"}`}
+            <a
+              href="/tin-tuc"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "news" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("news")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               TIN TỨC
-              {location.pathname === "/tin-tuc" && (
+              {activeItem === "news" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "news" && activeItem !== "news" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-              {hoveredItem === "news" && location.pathname !== "/tin-tuc" && (
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
-              )}
-            </Link>
+            </a>
 
-            <Link
-              to="/khuyen-mai"
-              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/khuyen-mai" ? "text-red-600" : "text-gray-700"}`}
+            <a
+              href="/khuyen-mai"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "promotions" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("promotions")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               KHUYẾN MÃI
-              {location.pathname === "/khuyen-mai" && (
+              {activeItem === "promotions" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "promotions" && activeItem !== "promotions" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-              {hoveredItem === "promotions" && location.pathname !== "/khuyen-mai" && (
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
-              )}
-            </Link>
+            </a>
 
-            <Link
-              to="/lien-he"
-              className={`py-3 border-b border-gray-200 relative ${location.pathname === "/lien-he" ? "text-red-600" : "text-gray-700"}`}
+            <a
+              href="/lien-he"
+              className={`py-3 border-b border-gray-200 relative ${activeItem === "contact" ? "text-red-600" : "text-gray-700"}`}
               onMouseEnter={() => setHoveredItem("contact")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               LIÊN HỆ
-              {location.pathname === "/lien-he" && (
+              {activeItem === "contact" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {hoveredItem === "contact" && activeItem !== "contact" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
-              {hoveredItem === "contact" && location.pathname !== "/lien-he" && (
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
-              )}
-            </Link>
+            </a>
           </nav>
         </div>
       </div>
@@ -410,48 +427,75 @@ function MobileMenu() {
 }
 
 export default function Navbar() {
-  const location = useLocation()
+  const [currentPath, setCurrentPath] = useState("")
+
+  // Xác định đường dẫn hiện tại khi component được tải
+  useEffect(() => {
+    setCurrentPath(window.location.pathname)
+
+    // Theo dõi thay đổi đường dẫn
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname)
+    }
+
+    window.addEventListener("popstate", handleLocationChange)
+
+    // Ghi đè phương thức pushState để bắt sự kiện khi URL thay đổi
+    const originalPushState = window.history.pushState
+    window.history.pushState = function (...args) {
+      originalPushState.apply(this, args)
+      handleLocationChange()
+    }
+
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange)
+      window.history.pushState = originalPushState
+    }
+  }, [])
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm h-[82px]">
-      <div className="container mx-auto px-2 h-full flex items-center justify-between">
-        {/* Logo - reduced size */}
-        <div className="w-28 md:w-32 lg:w-36">
+      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+        {/* Logo */}
+        <div className="w-28 md:w-36 lg:w-40">
           <img src="/bic-logo.png" alt="BIC Logo" width={150} height={38} className="h-auto" />
         </div>
 
         {/* Navigation - hiển thị trên desktop */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 mx-4 xl:mx-6">
-          <NavItem to="/" active={location.pathname === "/"} isHome={location.pathname === "/"}>
+        <nav className="hidden lg:flex items-center justify-center flex-1 mx-2 xl:mx-4">
+          <NavItem href="/" isHome={true} isActive={currentPath === "/"}>
             TRANG CHỦ
           </NavItem>
-          <ProductMenu />
-          <NavItem to="/gioi-thieu" active={location.pathname === "/gioi-thieu"}>
+          <ProductMenu isActive={currentPath.includes("/san-pham")} />
+          <NavItem href="/gioi-thieu" isActive={currentPath.includes("/gioi-thieu")}>
             GIỚI THIỆU
           </NavItem>
-          <NavItem to="/tin-tuc" active={location.pathname === "/tin-tuc"}>
+          <NavItem href="/tin-tuc" isActive={currentPath.includes("/tin-tuc")}>
             TIN TỨC
           </NavItem>
-          <NavItem to="/khuyen-mai" active={location.pathname === "/khuyen-mai"}>
+          <NavItem href="/khuyen-mai" isActive={currentPath.includes("/khuyen-mai")}>
             KHUYẾN MÃI
           </NavItem>
-          <NavItem to="/lien-he" active={location.pathname === "/lien-he"}>
+          <NavItem href="/lien-he" isActive={currentPath.includes("/lien-he")}>
             LIÊN HỆ
           </NavItem>
         </nav>
 
         {/* Auth & Cart - hiển thị trên desktop */}
-        <div className="hidden lg:flex items-center gap-1 xl:gap-2">
-          <Link to="/dang-nhap" className="px-2 xl:px-3 py-1.5 text-xs xl:text-sm font-medium">
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+          <a
+            href="/dang-nhap"
+            className="px-2 xl:px-3 py-1.5 text-sm xl:text-base font-medium"
+          >
             ĐĂNG NHẬP
-          </Link>
-          <Link
-            to="/dang-ky"
-            className="px-2 xl:px-3 py-1.5 text-xs xl:text-sm font-medium border border-gray-300 rounded-md"
+          </a>
+          <a
+            href="/dang-ky"
+            className="px-2 xl:px-3 py-1.5 text-sm xl:text-base font-medium border border-gray-300 rounded-md"
           >
             ĐĂNG KÝ
-          </Link>
-          <div className="relative ml-1">
+          </a>
+          <div className="relative ml-1 xl:ml-2">
             <ShoppingCart className="w-5 h-5" />
             <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               0

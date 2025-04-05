@@ -12,6 +12,8 @@ export default function HomePage() {
     <main className="min-h-screen">
       <Navbar />
       <div className="pt-[82px]">
+        {" "}
+        {/* Đảm bảo padding-top bằng chính xác chiều cao của navbar */}
         <HeroBanner />
         <ProductShowcase />
         <CustomerSupport />

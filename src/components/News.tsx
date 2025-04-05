@@ -1,58 +1,10 @@
+"use client"
+
 import { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
-interface NewsItem {
-  id: string
-  image: string
-  title: string
-  description: string
-  link: string
-}
+import { newsData } from "../data/newsData"
 
 export default function News() {
-  const newsItems: NewsItem[] = [
-    {
-      id: "news1",
-      image: "/placeholder.svg?height=200&width=300",
-      title: "BIC TẶNG QUÀ HẤP DẪN MỪNG NGÀY PHỤ NỮ VIỆT NAM",
-      description:
-        "Chào mừng ngày Phụ nữ Việt Nam 20/10, từ ngày 11/10/2024 đến ngày 31/10/2024, Tổng Công ty Bảo hiểm BIDV (BIC) gửi tặng...",
-      link: "/tin-tuc/bic-tang-qua-phu-nu-viet-nam",
-    },
-    {
-      id: "news2",
-      image: "/placeholder.svg?height=200&width=300",
-      title: "10.10: TƯNG BỪNG ƯU ĐÃI TỚI 30% PHÍ BẢO HIỂM TẠI BIC",
-      description:
-        "Chào mừng 70 năm Ngày Giải phóng Thủ đô (10/10/1954 – 10/10/2024), Tổng Công ty Bảo hiểm BIDV (BIC) gửi tặng khách hàng...",
-      link: "/tin-tuc/uu-dai-30-phan-tram",
-    },
-    {
-      id: "news3",
-      image: "/placeholder.svg?height=200&width=300",
-      title: "SIÊU HỘI NGÀY ĐÔI 9.9: BIC ƯU ĐÃI TỚI 40% PHÍ BẢO HIỂM",
-      description:
-        'Ngày 09/09/2024, Tổng Công ty Bảo hiểm BIDV (BIC) gửi tặng khách hàng chương trình khuyến mại "Ngày vàng siêu ưu đãi"...',
-      link: "/tin-tuc/sieu-hoi-ngay-doi",
-    },
-    {
-      id: "news4",
-      image: "/placeholder.svg?height=200&width=300",
-      title: "BIC TRIỂN KHAI CHƯƠNG TRÌNH BẢO HIỂM XE MÁY MỚI",
-      description:
-        "Từ ngày 01/08/2024, BIC chính thức triển khai chương trình bảo hiểm xe máy mới với nhiều quyền lợi hấp dẫn cho khách hàng...",
-      link: "/tin-tuc/bao-hiem-xe-may-moi",
-    },
-    {
-      id: "news5",
-      image: "/placeholder.svg?height=200&width=300",
-      title: "BIC ĐƯỢC VINH DANH TOP 10 DOANH NGHIỆP BẢO HIỂM UY TÍN",
-      description:
-        "Ngày 15/07/2024, BIC vinh dự được trao tặng danh hiệu Top 10 Doanh nghiệp Bảo hiểm uy tín năm 2024 do Công ty CP Báo cáo Đánh giá VN tổ chức...",
-      link: "/tin-tuc/top-10-doanh-nghiep-bao-hiem",
-    },
-  ]
-
   const [slideIndex, setSlideIndex] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const [itemsPerRow, setItemsPerRow] = useState(3)
@@ -84,7 +36,7 @@ export default function News() {
   }, [itemsPerRow])
 
   // Tính toán số slide tối đa
-  const maxSlides = Math.max(0, newsItems.length - itemsPerRow)
+  const maxSlides = Math.max(0, newsData.length - itemsPerRow)
 
   // Di chuyển sang phải
   const nextSlide = () => {
@@ -142,17 +94,24 @@ export default function News() {
               className="flex gap-6 transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(${getTranslateX()}px)` }}
             >
-              {newsItems.map((item) => (
+              {newsData.map((item) => (
                 <div
                   key={item.id}
                   className="bg-white rounded-md shadow-md overflow-hidden flex-shrink-0"
                   style={{ width: itemWidth > 0 ? `${itemWidth}px` : `calc(100% / ${itemsPerRow})` }}
                 >
                   <a href={item.link} className="block">
-                    <img src={item.image || "/placeholder.svg"} alt={item.title} className="w-full h-56 object-cover" />
+                    <img 
+                      src={item.image || "/placeholder.svg"} 
+                      alt={item.title} 
+                      className="w-full h-56 object-cover" 
+                      onError={(e) => {
+                        e.currentTarget.src = "/placeholder.svg";
+                      }}
+                    />
                     <div className="p-6">
                       <h3 className="font-medium text-gray-700 text-center mb-4 text-base">{item.title}</h3>
-                      <p className="text-gray-600 text-sm">{item.description}</p>
+                      <p className="text-gray-600 text-sm">{item.excerpt}</p>
                     </div>
                   </a>
                 </div>

@@ -1,6 +1,9 @@
+"use client"
+
 import { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
+// Dữ liệu sản phẩm bảo hiểm
 const insuranceProducts = [
   {
     id: "cyber-risk",
@@ -59,22 +62,6 @@ const insuranceProducts = [
     buyLink: "/mua-ngay/tnds-xe-may",
   },
   {
-    id: "vat-chat-oto",
-    image: "/products/bic-vat-chat-oto.png",
-    tag: "Vật chất ô tô",
-    title: "Bảo hiểm vật chất ô tô",
-    contactLink: "/lien-he/vat-chat-oto",
-    buyLink: "/mua-ngay/vat-chat-oto",
-  },
-  {
-    id: "vat-chat-xe-may",
-    image: "/products/bic-vat-chat-xe-may.png",
-    tag: "Vật chất xe máy",
-    title: "Bảo hiểm vật chất xe máy",
-    contactLink: "/lien-he/vat-chat-xe-may",
-    buyLink: "/mua-ngay/vat-chat-xe-may",
-  },
-  {
     id: "du-lich-quoc-te",
     image: "/products/bic-du-lich-quoc-te.png",
     tag: "Du lịch quốc tế",
@@ -90,24 +77,26 @@ export default function ProductShowcase() {
   const [itemsPerRow, setItemsPerRow] = useState(3)
   const [itemWidth, setItemWidth] = useState(0)
 
+  // Chia sản phẩm thành 2 hàng chính xác
   const firstRowCount = Math.ceil(insuranceProducts.length / 2)
   const topRowProducts = insuranceProducts.slice(0, firstRowCount)
   const bottomRowProducts = insuranceProducts.slice(firstRowCount)
 
+  // Xác định số lượng sản phẩm hiển thị dựa trên kích thước màn hình
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        setItemsPerRow(3) 
+        setItemsPerRow(3) // Desktop: 3 sản phẩm mỗi hàng
       } else if (window.innerWidth >= 768) {
-        setItemsPerRow(2) 
+        setItemsPerRow(2) // Tablet: 2 sản phẩm mỗi hàng
       } else {
-        setItemsPerRow(1) 
+        setItemsPerRow(1) // Mobile: 1 sản phẩm mỗi hàng
       }
 
-    
+      // Tính toán chiều rộng của mỗi item
       if (containerRef.current) {
         const containerWidth = containerRef.current.clientWidth
-        const gap = 24 
+        const gap = 24 // gap-6 = 1.5rem = 24px
         const calculatedWidth = (containerWidth - gap * (itemsPerRow - 1)) / itemsPerRow
         setItemWidth(calculatedWidth)
       }
@@ -118,50 +107,63 @@ export default function ProductShowcase() {
     return () => window.removeEventListener("resize", handleResize)
   }, [itemsPerRow])
 
+  // Tính toán số slide tối đa dựa trên hàng có nhiều sản phẩm nhất
   const maxSlides = Math.max(0, topRowProducts.length - itemsPerRow)
 
+  // Di chuyển sang phải
   const nextSlide = () => {
     if (slideIndex < maxSlides) {
       setSlideIndex(slideIndex + 1)
     }
   }
 
+  // Di chuyển sang trái
   const prevSlide = () => {
     if (slideIndex > 0) {
       setSlideIndex(slideIndex - 1)
     }
   }
 
+  // Tính toán translateX dựa trên slide hiện tại
   const getTranslateX = () => {
     if (itemWidth === 0) return 0
-    const gapWidth = 24 
+    const gapWidth = 24 // gap-6 = 1.5rem = 24px
     return -slideIndex * (itemWidth + gapWidth)
   }
 
+  // Tạo danh sách sản phẩm cho một hàng
   const renderProductRow = (products: typeof insuranceProducts) => {
     return products.map((product) => (
       <div
         key={product.id}
-        className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg flex-shrink-0"
+        className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl flex-shrink-0 group cursor-pointer"
         style={{ width: itemWidth > 0 ? `${itemWidth}px` : `calc(100% / ${itemsPerRow})` }}
       >
-        <div className="relative h-56">
-          <img src={product.image || "/placeholder.svg"} alt={product.title} className="w-full h-full object-cover" />
+        <div className="relative h-[200px] overflow-hidden">
+          <img
+            src={product.image || "/placeholder.svg"}
+            alt={product.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {/* Overlay gradient để làm nổi bật text nếu cần */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
         </div>
 
-        <div className="p-6">
-          <div className="text-gray-600 text-center mb-2">{product.tag}</div>
+        <div className="p-6 flex flex-col min-h-[160px] bg-white">
+          <div className="text-red-600 font-medium text-center mb-2">{product.tag}</div>
 
-          <h3 className="text-red-600 font-medium text-center mb-8">{product.title}</h3>
+          <h3 className="text-gray-800 font-medium text-center mb-6 group-hover:text-red-600 transition-colors line-clamp-2">
+            {product.title}
+          </h3>
 
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center mt-auto">
             <a href={product.contactLink} className="text-red-600 font-medium hover:underline">
               Liên hệ
             </a>
 
             <a
               href={product.buyLink}
-              className="border border-red-600 text-red-600 px-6 py-2 rounded hover:bg-red-600 hover:text-white transition-colors"
+              className="border border-red-600 text-red-600 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-colors"
             >
               MUA NGAY
             </a>
@@ -171,8 +173,10 @@ export default function ProductShowcase() {
     ))
   }
 
+  // Kiểm tra xem có thể trượt sang phải không
   const canSlideNext = slideIndex < maxSlides
 
+  // Kiểm tra xem có thể trượt sang trái không
   const canSlidePrev = slideIndex > 0
 
   return (
@@ -181,6 +185,7 @@ export default function ProductShowcase() {
         <h2 className="text-center text-red-600 text-3xl font-bold mb-12">Sản phẩm Bảo hiểm trực tuyến BIC</h2>
 
         <div className="relative px-16">
+          {/* Navigation arrows */}
           <button
             onClick={prevSlide}
             className={`absolute left-[-10px] top-1/2 transform -translate-y-1/2 z-10 ${
@@ -203,8 +208,10 @@ export default function ProductShowcase() {
             <ChevronRight className="w-10 h-10" />
           </button>
 
+          {/* Slider container */}
           <div ref={containerRef} className="overflow-hidden">
-            <div className="grid grid-rows-2 gap-6">
+            <div className="grid grid-rows-2 gap-8">
+              {/* Hàng 1 */}
               <div className="overflow-hidden">
                 <div
                   className="flex gap-6 transition-transform duration-500 ease-in-out"
@@ -214,6 +221,7 @@ export default function ProductShowcase() {
                 </div>
               </div>
 
+              {/* Hàng 2 */}
               <div className="overflow-hidden">
                 <div
                   className="flex gap-6 transition-transform duration-500 ease-in-out"

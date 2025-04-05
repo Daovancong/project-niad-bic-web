@@ -1,3 +1,5 @@
+"use client"
+
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
@@ -61,7 +63,7 @@ export default function HeroBanner() {
     if (animationID.current) {
       cancelAnimationFrame(animationID.current)
     }
-    
+
     if ("clientX" in event.nativeEvent) {
       event.preventDefault()
     }
@@ -110,25 +112,16 @@ export default function HeroBanner() {
   // Sample slides data
   const slides = [
     {
-      title: "PHÍ GIẢM THÊM AN, VỮNG VÀNG TAY LÁI",
-      discount: "15%",
-      description: "PHÍ BẢO HIỂM TNDS XE MÁY",
-      subtext: "DÀNH CHO KHÁCH HÀNG TÁI TỤC KHÔNG PHÁT SINH TỔN THẤT",
-      bgColor: "from-[#a8e0d1] to-[#b9e6d9]",
+      image: "/Ngay-Vang-83.png",
+      alt: "Ngày Vàng 8/3",
     },
     {
-      title: "BẢO HIỂM XE MÁY TOÀN DIỆN",
-      discount: "20%",
-      description: "BẢO HIỂM VẬT CHẤT XE MÁY",
-      subtext: "BẢO VỆ TOÀN DIỆN CHO XE CỦA BẠN",
-      bgColor: "from-[#a8d0e1] to-[#b9d6e9]",
+      image: "/tnds-oto.png",
+      alt: "Bảo hiểm TNDS ô tô",
     },
     {
-      title: "AN TÂM TRÊN MỌI HÀNH TRÌNH",
-      discount: "10%",
-      description: "BẢO HIỂM TAI NẠN NGƯỜI LÁI",
-      subtext: "CHỈ TỪ 50.000 ĐỒNG/NĂM",
-      bgColor: "from-[#c8e0a1] to-[#d9e6b9]",
+      image: "/products/bic-cyber-risk.png",
+      alt: "Bảo hiểm Cyber Risk",
     },
   ]
 
@@ -152,73 +145,8 @@ export default function HeroBanner() {
             currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          {/* Background with clouds effect */}
-          <div className={`absolute inset-0 bg-gradient-to-r ${slide.bgColor}`}>
-            {/* We would add cloud images here in a real implementation */}
-          </div>
-
-          {/* Main content */}
-          <div className="container mx-auto px-4 h-full relative z-10">
-            <div className="flex flex-col md:flex-row h-full">
-              {/* Left side - Text content */}
-              <div className="w-full md:w-1/2 flex flex-col justify-center">
-                <h2 className="text-[#2a8b7d] text-3xl md:text-4xl font-bold text-right mb-4 drop-shadow-md">
-                  {slide.title.split(",").map((part, i) => (
-                    <span key={i}>
-                      {part}
-                      {i < slide.title.split(",").length - 1 && <br />}
-                    </span>
-                  ))}
-                </h2>
-
-                <div className="text-[#2a8b7d] text-4xl md:text-5xl font-bold mb-6">GIẢM NGAY</div>
-
-                <div className="text-[#f0c14b] text-8xl md:text-9xl font-bold drop-shadow-lg mb-4">
-                  {slide.discount}
-                </div>
-
-                <div className="text-[#2a8b7d] text-xl md:text-2xl font-bold mb-2">{slide.description}</div>
-
-                <div className="text-[#2a8b7d] text-lg">
-                  {slide.subtext.split(" ").length > 5 ? (
-                    <>
-                      {slide.subtext.split(" ").slice(0, 5).join(" ")}
-                      <br />
-                      {slide.subtext.split(" ").slice(5).join(" ")}
-                    </>
-                  ) : (
-                    slide.subtext
-                  )}
-                </div>
-              </div>
-
-              {/* Right side - Image */}
-              <div className="w-full md:w-1/2 flex items-center justify-center relative">
-                <img
-                  src="/placeholder.svg?height=500&width=300"
-                  alt="Couple on motorcycle"
-                  width={500}
-                  height={300}
-                  className="object-contain"
-                  draggable="false"
-                />
-
-                {/* QR code */}
-                <div className="absolute bottom-10 right-0">
-                  <div className="text-right mb-2 text-[#2a8b7d]">mybic.vn</div>
-                  <img
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="QR Code"
-                    width={100}
-                    height={100}
-                    className="ml-auto"
-                    draggable="false"
-                  />
-                  <div className="text-right mt-2 text-[#2a8b7d]">1900 9456</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Full-width image */}
+          <img src={slide.image || "/placeholder.svg"} alt={slide.alt} className="w-full h-full object-cover" />
         </div>
       ))}
 

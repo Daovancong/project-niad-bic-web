@@ -3,97 +3,32 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { Search } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { Link } from "react-router-dom"
-
-// Dữ liệu tin tức mẫu
-const newsData = [
-  {
-    id: "news1",
-    image: "/placeholder.svg?height=400&width=800",
-    thumbnail: "/placeholder.svg?height=100&width=150",
-    title: "THÔNG BÁO ĐIỀU CHỈNH THỜI GIAN THỰC HIỆN BẢO LÃNH VIỆN PHÍ",
-    date: "October 05, 2023",
-    category: "Tin tức BIC",
-    excerpt:
-      "Thông báo về việc điều chỉnh thời gian thực hiện bảo lãnh viện phí đối với các hợp đồng bảo hiểm sức khỏe...",
-    link: "/tin-tuc/thong-bao-dieu-chinh-thoi-gian-bao-lanh-vien-phi",
-    featured: true,
-  },
-  {
-    id: "news2",
-    image: "/placeholder.svg?height=400&width=800",
-    thumbnail: "/placeholder.svg?height=100&width=150",
-    title: "BIC RA MẮT BẢO HIỂM SỨC KHỎE BIC SMART CARE DÀNH CHO KHÁCH HÀNG CAO CẤP CỦA BIDV",
-    date: "July 19, 2023",
-    category: "Tin tức BIC",
-    excerpt:
-      "Tổng Công ty Bảo hiểm BIDV (BIC) chính thức ra mắt sản phẩm bảo hiểm sức khỏe BIC Smart Care dành riêng cho khách hàng cao cấp của BIDV...",
-    link: "/tin-tuc/bic-ra-mat-bao-hiem-suc-khoe-smart-care",
-    featured: false,
-  },
-  {
-    id: "news3",
-    image: "/placeholder.svg?height=400&width=800",
-    thumbnail: "/placeholder.svg?height=100&width=150",
-    title: "THÔNG BÁO LỊCH NGHỈ TẾT NGUYÊN ĐÁN QUÝ MÃO 2023",
-    date: "January 18, 2023",
-    category: "Tin tức BIC",
-    excerpt: "Tổng Công ty Bảo hiểm BIDV (BIC) trân trọng thông báo lịch nghỉ Tết Nguyên đán Quý Mão 2023 như sau...",
-    link: "/tin-tuc/thong-bao-lich-nghi-tet-nguyen-dan-2023",
-    featured: false,
-  },
-  {
-    id: "news4",
-    image: "/placeholder.svg?height=400&width=800",
-    thumbnail: "/placeholder.svg?height=100&width=150",
-    title: "BIC TẶNG QUÀ HẤP DẪN MỪNG NGÀY PHỤ NỮ VIỆT NAM",
-    date: "October 11, 2023",
-    category: "Khuyến mại",
-    excerpt:
-      "Chào mừng ngày Phụ nữ Việt Nam 20/10, từ ngày 11/10/2023 đến ngày 31/10/2023, Tổng Công ty Bảo hiểm BIDV (BIC) gửi tặng khách hàng nữ...",
-    link: "/tin-tuc/bic-tang-qua-phu-nu-viet-nam",
-    featured: false,
-  },
-  {
-    id: "news5",
-    image: "/placeholder.svg?height=400&width=800",
-    thumbnail: "/placeholder.svg?height=100&width=150",
-    title: "SIÊU HỘI NGÀY ĐÔI 9.9: BIC ƯU ĐÃI TỚI 40% PHÍ BẢO HIỂM",
-    date: "September 09, 2023",
-    category: "Khuyến mại",
-    excerpt:
-      "Ngày 09/09/2023, Tổng Công ty Bảo hiểm BIDV (BIC) gửi tặng khách hàng chương trình khuyến mại 'Ngày vàng siêu ưu đãi'...",
-    link: "/tin-tuc/sieu-hoi-ngay-doi",
-    featured: false,
-  },
-  {
-    id: "news6",
-    image: "/placeholder.svg?height=400&width=800",
-    thumbnail: "/placeholder.svg?height=100&width=150",
-    title: "CÂU CHUYỆN VỀ NGƯỜI PHỤ NỮ ĐƯỢC BẢO HIỂM BIC HỖ TRỢ ĐIỀU TRỊ UNG THƯ",
-    date: "August 15, 2023",
-    category: "Câu chuyện bảo hiểm",
-    excerpt:
-      "Câu chuyện cảm động về hành trình chiến đấu với bệnh ung thư của chị Nguyễn Thị H. và sự đồng hành của BIC...",
-    link: "/tin-tuc/cau-chuyen-ve-nguoi-phu-nu-duoc-bao-hiem",
-    featured: false,
-  },
-]
+import { newsData } from "../data/newsData"
 
 export default function NewsPage() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 4
 
   // Lọc tin tức theo từ khóa tìm kiếm
   const filteredNews = newsData.filter(
     (news) => searchTerm === "" || news.title.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  // Tìm tin tức nổi bật
-  const featuredNews = newsData.find((news) => news.featured)
+  // Tính toán tổng số trang
+  const totalPages = Math.ceil(filteredNews.length / itemsPerPage)
 
-  // Lấy 3 tin tức mới nhất (dựa trên ngày tháng)
-  const latestNews = [...newsData].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3)
+  // Lấy tin tức cho trang hiện tại
+  const currentNews = filteredNews.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
+  // Xử lý chuyển trang
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
+    }
+  }
 
   return (
     <main className="min-h-screen">
@@ -110,68 +45,80 @@ export default function NewsPage() {
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Cột trái - Tin tức chính */}
-            <div className="w-full lg:w-2/3">
-              {/* Tin nổi bật */}
-              {featuredNews && (
-                <div className="mb-8">
-                  <Link to={featuredNews.link} className="block">
-                    <div className="bg-white rounded-md overflow-hidden shadow-md">
+            <div className="w-full lg:w-3/4">
+              {/* Danh sách tin tức */}
+              <div className="space-y-10">
+                {currentNews.map((news) => (
+                  <div key={news.id} className="bg-white rounded-md overflow-hidden shadow-md">
+                    <Link to={news.link}>
                       <img
-                        src={featuredNews.image || "/placeholder.svg"}
-                        alt={featuredNews.title}
+                        src={news.image || "/placeholder.svg"}
+                        alt={news.title}
                         className="w-full h-[400px] object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "/placeholder.svg";
+                        }}
                       />
-                      <div className="p-6">
-                        <div className="flex justify-between items-center mb-2">
-                          <div className="text-gray-500 text-sm">{featuredNews.date}</div>
-                          <div className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-600">
-                            {featuredNews.category}
-                          </div>
-                        </div>
-                        <h2 className="text-2xl font-bold text-gray-800 mb-3">{featuredNews.title}</h2>
-                        <p className="text-gray-600">{featuredNews.excerpt}</p>
-                        <div className="mt-4">
-                          <span className="text-red-600 font-medium">Xem thêm</span>
-                        </div>
+                    </Link>
+                    <div className="p-6">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="text-gray-500 text-sm">{news.date}</div>
+                        <div className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-600">{news.category}</div>
                       </div>
+                      <Link to={news.link}>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-3 hover:text-red-600 transition-colors">
+                          {news.title}
+                        </h2>
+                      </Link>
+                      <p className="text-gray-600 mb-4">{news.excerpt}</p>
+                      <Link to={news.link} className="inline-block">
+                        <button className="border border-red-600 text-red-600 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-colors">
+                          Xem thêm
+                        </button>
+                      </Link>
                     </div>
-                  </Link>
+                  </div>
+                ))}
+              </div>
+
+              {/* Phân trang */}
+              {totalPages > 1 && (
+                <div className="flex justify-center mt-10">
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => goToPage(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className={`p-2 rounded-md ${currentPage === 1 ? "text-gray-400 cursor-not-allowed" : "text-gray-700 hover:bg-gray-100"}`}
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => goToPage(page)}
+                        className={`w-10 h-10 rounded-md ${
+                          currentPage === page ? "bg-red-600 text-white" : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() => goToPage(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className={`p-2 rounded-md ${currentPage === totalPages ? "text-gray-400 cursor-not-allowed" : "text-gray-700 hover:bg-gray-100"}`}
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               )}
-
-              {/* Danh sách tin tức */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredNews
-                  .filter((news) => !news.featured)
-                  .map((news) => (
-                    <Link to={news.link} key={news.id} className="block">
-                      <div className="bg-white rounded-md overflow-hidden shadow-md h-full">
-                        <img
-                          src={news.image || "/placeholder.svg"}
-                          alt={news.title}
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="p-4">
-                          <div className="flex justify-between items-center mb-2">
-                            <div className="text-gray-500 text-sm">{news.date}</div>
-                            <div className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-600">
-                              {news.category}
-                            </div>
-                          </div>
-                          <h3 className="text-lg font-medium text-gray-800 mb-2">{news.title}</h3>
-                          <p className="text-gray-600 text-sm">{news.excerpt}</p>
-                          <div className="mt-3">
-                            <span className="text-red-600 text-sm font-medium">Xem thêm</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-              </div>
             </div>
 
             {/* Cột phải - Sidebar */}
-            <div className="w-full lg:w-1/3">
+            <div className="w-full lg:w-1/4">
               {/* Ô tìm kiếm */}
               <div className="bg-white rounded-md shadow-md p-4 mb-8">
                 <div className="flex">
@@ -180,7 +127,10 @@ export default function NewsPage() {
                     placeholder="Tìm kiếm"
                     className="flex-1 border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value)
+                      setCurrentPage(1) // Reset về trang 1 khi tìm kiếm
+                    }}
                   />
                   <button className="bg-red-600 text-white px-4 py-2 rounded-r-md">
                     <Search className="w-5 h-5" />
@@ -192,19 +142,25 @@ export default function NewsPage() {
               <div className="bg-white rounded-md shadow-md p-6 mb-8">
                 <h3 className="text-xl font-bold text-red-600 mb-6 pb-2 border-b border-gray-200">TIN MỚI NHẤT</h3>
                 <div className="space-y-6">
-                  {latestNews.map((news) => (
-                    <Link to={news.link} key={news.id} className="flex gap-4">
-                      <img
-                        src={news.thumbnail || "/placeholder.svg"}
-                        alt={news.title}
-                        className="w-20 h-20 object-cover rounded-md"
-                      />
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-800 mb-1">{news.title}</h4>
-                        <div className="text-gray-500 text-xs">{news.date}</div>
-                      </div>
-                    </Link>
-                  ))}
+                  {newsData
+                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                    .slice(0, 3)
+                    .map((news) => (
+                      <Link to={news.link} key={news.id} className="flex gap-4">
+                        <img
+                          src={news.thumbnail || "/placeholder.svg"}
+                          alt={news.title}
+                          className="w-20 h-20 object-cover rounded-md"
+                          onError={(e) => {
+                            e.currentTarget.src = "/placeholder.svg";
+                          }}
+                        />
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-800 mb-1 line-clamp-2">{news.title}</h4>
+                          <div className="text-gray-500 text-xs">{news.date}</div>
+                        </div>
+                      </Link>
+                    ))}
                 </div>
               </div>
             </div>
