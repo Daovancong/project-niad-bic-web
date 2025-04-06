@@ -157,7 +157,7 @@ function NavItem({
 
       {/* Hiển thị chỉ báo cho trang đang active */}
       {isActive && (
-        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center">
+        <div className="absolute bottom-[-24px] left-0 w-full flex flex-col items-center">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
@@ -165,7 +165,7 @@ function NavItem({
 
       {/* Hiển thị chỉ báo khi hover cho các trang không active */}
       {!isActive && (
-        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-[-24px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
@@ -217,12 +217,12 @@ function ProductMenu({ isActive = false }) {
 
       {/* Indicator for hover - đảm bảo căn chỉnh giống các mục khác */}
       {isActive ? (
-        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center">
+        <div className="absolute bottom-[-29px] left-0 w-full flex flex-col items-center">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
       ) : (
-        <div className="absolute bottom-[-20px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-[-29px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
@@ -454,8 +454,8 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm h-[82px]">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm">
+      <div className="container mx-auto px-4 h-[82px] flex items-center justify-between">
         {/* Logo */}
         <div className="w-28 md:w-36 lg:w-40">
           <img src="/bic-logo.png" alt="BIC Logo" width={150} height={38} className="h-auto" />
@@ -483,10 +483,7 @@ export default function Navbar() {
 
         {/* Auth & Cart - hiển thị trên desktop */}
         <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-          <a
-            href="/dang-nhap"
-            className="px-2 xl:px-3 py-1.5 text-sm xl:text-base font-medium"
-          >
+          <a href="/dang-nhap" className="px-2 xl:px-3 py-1.5 text-sm xl:text-base font-medium">
             ĐĂNG NHẬP
           </a>
           <a
@@ -514,6 +511,9 @@ export default function Navbar() {
           <MobileMenu />
         </div>
       </div>
+
+      {/* Vạch đỏ ở dưới cùng của header */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-red-600 opacity-0"></div>
     </header>
   )
 }

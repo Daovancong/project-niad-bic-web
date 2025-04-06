@@ -15,7 +15,7 @@ export interface NewsItem {
     {
       id: "news1",
       image: "/lich-nghi-tet.png?height=400&width=800",
-      thumbnail: "/lich-nghi-tet.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "THÔNG BÁO LỊCH NGHỈ TẾT NGUYÊN ĐÁN QUÝ MÃO 2023",
       date: "January 18, 2023",
       category: "Tin tức BIC",
@@ -26,7 +26,7 @@ export interface NewsItem {
     {
       id: "news2",
       image: "/BH-smart-care.png?height=400&width=800",
-      thumbnail: "/BH-smart-care.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "BIC RA MẮT BẢO HIỂM SỨC KHỎE BIC SMART CARE DÀNH CHO KHÁCH HÀNG CAO CẤP CỦA BIDV",
       date: "July 19, 2023",
       category: "Tin tức BIC",
@@ -38,7 +38,7 @@ export interface NewsItem {
     {
       id: "news3",
       image: "/Thong-bao-dieu-chinh-thoi-gian-thuc-hien-bao-lanh-vien-phi.png?height=400&width=800",
-      thumbnail: "/Thong-bao-dieu-chinh-thoi-gian-thuc-hien-bao-lanh-vien-phi.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "THÔNG BÁO ĐIỀU CHỈNH THỜI GIAN THỰC HIỆN BẢO LÃNH VIỆN PHÍ",
       date: "October 05, 2023",
       category: "Tin tức BIC",
@@ -50,7 +50,7 @@ export interface NewsItem {
     {
       id: "news4",
       image: "/Ngay-Vang-83.png?height=400&width=800",
-      thumbnail: "/Ngay-Vang-83.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "BIC TẶNG QUÀ HẤP DẪN MỪNG NGÀY PHỤ NỮ VIỆT NAM",
       date: "October 11, 2023",
       category: "Khuyến mại",
@@ -62,7 +62,7 @@ export interface NewsItem {
     {
       id: "news5",
       image: "/sieu-hoi-99.png?height=400&width=800",
-      thumbnail: "/sieu-hoi-99.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "SIÊU HỘI NGÀY ĐÔI 9.9: BIC ƯU ĐÃI TỚI 40% PHÍ BẢO HIỂM",
       date: "September 09, 2023",
       category: "Khuyến mại",
@@ -74,7 +74,7 @@ export interface NewsItem {
     {
       id: "news6",
       image: "/bic-giam-15-phi-bao-hiem-xe-may.png?height=400&width=800",
-      thumbnail: "/bic-giam-15-phi-bao-hiem-xe-may.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "BIC GIẢM 15% PHÍ BẢO HIỂM XE MÁY",
       date: "August 01, 2023",
       category: "Tin tức BIC",
@@ -86,7 +86,7 @@ export interface NewsItem {
     {
       id: "news7",
       image: "/bic-top10.png?height=400&width=800",
-      thumbnail: "/bic-top10.png?height=100&width=150",
+      thumbnail: "/placeholder.svg?height=100&width=150",
       title: "BIC ĐƯỢC VINH DANH TOP 10 DOANH NGHIỆP BẢO HIỂM UY TÍN",
       date: "July 15, 2023",
       category: "Tin tức BIC",

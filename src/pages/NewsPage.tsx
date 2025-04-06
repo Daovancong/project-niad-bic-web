@@ -33,7 +33,7 @@ export default function NewsPage() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <div className="pt-[82px]">
+      <div className="pt-[81px]">
         {/* Tiêu đề trang */}
         <div className="border-b border-gray-200">
           <div className="max-w-6xl mx-auto px-4 py-8">

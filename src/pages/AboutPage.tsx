@@ -16,7 +16,7 @@ export default function AboutPage() {
         />
       </div>
 
-      <div className="pt-[82px]">
+      <div className="pt-[81px]">
         {/* Phần nội dung chính của trang Giới thiệu */}
         <section className="py-6 bg-white">
           <div className="mx-[90px] px-[15px]">
