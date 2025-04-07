@@ -142,12 +142,8 @@ function NavItem({
   return (
     <a
       href={href}
-      className={`px-2 py-1.5 mx-1 text-sm lg:text-base font-medium relative group ${
-        isProduct
-          ? "text-red-600 border border-red-600 rounded-md"
-          : isActive
-            ? "text-red-600"
-            : "text-gray-800 hover:text-red-600"
+      className={`px-2 py-1.5 ${isProduct ? "mx-5" : "mx-3"} text-sm lg:text-base font-medium relative group ${
+        isProduct ? "text-red-600 border border-red-600 rounded-md" : "text-gray-800"
       }`}
     >
       <div className="flex items-center">
@@ -210,7 +206,7 @@ function ProductMenu({ isActive = false }) {
     <div className="group relative" ref={productMenuRef}>
       <a
         href="/san-pham"
-        className="px-2 py-1.5 mx-1 text-sm lg:text-base font-medium relative text-red-600 border border-red-600 rounded-md"
+        className="px-2 py-1.5 mx-5 text-sm lg:text-base font-medium relative text-red-600 border border-red-600 rounded-md"
       >
         SẢN PHẨM
       </a>
@@ -244,7 +240,7 @@ function ProductMenu({ isActive = false }) {
               <a
                 href={item.href}
                 className={`block px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${
-                  activeSubmenu === item.id ? "text-red-600" : "hover:text-red-600"
+                  activeSubmenu === item.id ? "text-red-600" : ""
                 }`}
               >
                 <span>{item.title}</span>
@@ -259,7 +255,7 @@ function ProductMenu({ isActive = false }) {
                     {item.subMenu && item.subMenu.length > 0 ? (
                       item.subMenu.map((subItem) => (
                         <li key={subItem.id}>
-                          <a href={subItem.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
+                          <a href={subItem.href} className="block px-4 py-2 hover:bg-gray-50">
                             {subItem.title}
                           </a>
                         </li>
@@ -267,7 +263,7 @@ function ProductMenu({ isActive = false }) {
                     ) : (
                       // If no submenu, repeat the parent item
                       <li>
-                        <a href={item.href} className="block px-4 py-2 hover:bg-gray-50 hover:text-red-600">
+                        <a href={item.href} className="block px-4 py-2 hover:bg-gray-50">
                           {item.title}
                         </a>
                       </li>
@@ -344,12 +340,12 @@ function MobileMenu() {
           <nav className="flex flex-col">
             <a
               href="/"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "home" ? "text-red-600" : "text-gray-700"}`}
+              className="py-3 border-b border-gray-200 relative text-gray-700"
               onMouseEnter={() => setHoveredItem("home")}
               onMouseLeave={() => setHoveredItem(null)}
             >
               TRANG CHỦ
-              {activeItem === "home" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {activeItem === "home" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-700"></div>}
               {hoveredItem === "home" && activeItem !== "home" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -357,7 +353,7 @@ function MobileMenu() {
 
             <a
               href="/san-pham"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "products" ? "text-red-600" : "text-gray-700"}`}
+              className="py-3 border-b border-gray-200 relative text-gray-700"
               onMouseEnter={() => setHoveredItem("products")}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -370,7 +366,7 @@ function MobileMenu() {
 
             <a
               href="/gioi-thieu"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "about" ? "text-red-600" : "text-gray-700"}`}
+              className="py-3 border-b border-gray-200 relative text-gray-700"
               onMouseEnter={() => setHoveredItem("about")}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -383,7 +379,7 @@ function MobileMenu() {
 
             <a
               href="/tin-tuc"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "news" ? "text-red-600" : "text-gray-700"}`}
+              className="py-3 border-b border-gray-200 relative text-gray-700"
               onMouseEnter={() => setHoveredItem("news")}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -396,7 +392,7 @@ function MobileMenu() {
 
             <a
               href="/khuyen-mai"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "promotions" ? "text-red-600" : "text-gray-700"}`}
+              className="py-3 border-b border-gray-200 relative text-gray-700"
               onMouseEnter={() => setHoveredItem("promotions")}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -409,7 +405,7 @@ function MobileMenu() {
 
             <a
               href="/lien-he"
-              className={`py-3 border-b border-gray-200 relative ${activeItem === "contact" ? "text-red-600" : "text-gray-700"}`}
+              className="py-3 border-b border-gray-200 relative text-gray-700"
               onMouseEnter={() => setHoveredItem("contact")}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -466,16 +462,21 @@ export default function Navbar() {
           <NavItem href="/" isHome={true} isActive={currentPath === "/"}>
             TRANG CHỦ
           </NavItem>
+          <div className="h-5 w-px bg-gray-300"></div>
           <ProductMenu isActive={currentPath.includes("/san-pham")} />
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem href="/gioi-thieu" isActive={currentPath.includes("/gioi-thieu")}>
             GIỚI THIỆU
           </NavItem>
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem href="/tin-tuc" isActive={currentPath.includes("/tin-tuc")}>
             TIN TỨC
           </NavItem>
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem href="/khuyen-mai" isActive={currentPath.includes("/khuyen-mai")}>
             KHUYẾN MÃI
           </NavItem>
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem href="/lien-he" isActive={currentPath.includes("/lien-he")}>
             LIÊN HỆ
           </NavItem>
