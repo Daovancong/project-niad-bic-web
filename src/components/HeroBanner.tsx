@@ -141,9 +141,8 @@ export default function HeroBanner() {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
         >
           {/* Full-width image */}
           <img src={slide.image || "/placeholder.svg"} alt={slide.alt} className="w-full h-full object-cover" />
@@ -155,9 +154,8 @@ export default function HeroBanner() {
         {Array.from({ length: totalSlides }).map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-colors ${
-              currentSlide === index ? "bg-[#2a8b7d]" : "bg-gray-300 hover:bg-gray-400"
-            }`}
+            className={`w-3 h-3 rounded-full transition-colors ${currentSlide === index ? "bg-[#2a8b7d]" : "bg-gray-300 hover:bg-gray-400"
+              }`}
             onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
           />

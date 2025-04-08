@@ -142,9 +142,8 @@ function NavItem({
   return (
     <a
       href={href}
-      className={`px-2 py-1.5 ${isProduct ? "mx-5" : "mx-3"} text-sm lg:text-base font-medium relative group ${
-        isProduct ? "text-red-600 border border-red-600 rounded-md" : "text-gray-800"
-      }`}
+      className={`px-2 py-1.5 ${isProduct ? "mx-5" : "mx-3"} text-sm lg:text-base font-medium relative group ${isProduct ? "text-red-600 border border-red-600 rounded-md" : "text-gray-800"
+        }`}
     >
       <div className="flex items-center">
         {children}
@@ -239,9 +238,8 @@ function ProductMenu({ isActive = false }) {
             >
               <a
                 href={item.href}
-                className={`block px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${
-                  activeSubmenu === item.id ? "text-red-600" : ""
-                }`}
+                className={`px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${activeSubmenu === item.id ? "text-red-600" : "hover:text-red-600"
+                  }`}
               >
                 <span>{item.title}</span>
                 <ChevronRight className="w-4 h-4" />
@@ -414,6 +412,14 @@ function MobileMenu() {
               {hoveredItem === "contact" && activeItem !== "contact" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
+            </a>
+            <a
+              href="/dang-nhap"
+              className="py-3 border-b border-gray-200 relative text-gray-700"
+              onMouseEnter={() => setHoveredItem("login")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              ĐĂNG NHẬP
             </a>
           </nav>
         </div>

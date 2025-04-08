@@ -13,9 +13,8 @@ const SupportCard = ({ icon, title, description, isActive = false, href }: Suppo
   return (
     <a
       href={href}
-      className={`bg-white p-6 flex flex-col items-center text-center relative transition-all group ${
-        isActive ? "shadow-sm" : ""
-      }`}
+      className={`bg-white p-6 flex flex-col items-center text-center relative transition-all group ${isActive ? "shadow-sm" : ""
+        }`}
       style={{ height: "280px", width: "100%" }}
     >
       <div className="text-red-600 mb-4 h-16 flex items-center justify-center">{icon}</div>
