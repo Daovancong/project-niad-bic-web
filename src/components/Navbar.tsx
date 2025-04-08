@@ -134,7 +134,7 @@ interface NavItemProps {
 function NavItem({
   children,
   href,
-  isHome = false,
+  // isHome = false,
   isProduct = false,
   hasSubmenu = false,
   isActive = false,
