@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { ShoppingCart, ChevronDown, ChevronRight, Menu, X } from "lucide-react"
+import type React from "react";
+import { useState, useRef, useEffect } from "react";
+import { ShoppingCart, ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 
 // Dữ liệu menu đa cấp
 const productMenuData = [
@@ -120,16 +120,18 @@ const productMenuData = [
       },
     ],
   },
-]
+];
 
 interface NavItemProps {
-  children: React.ReactNode
-  href: string
-  isHome?: boolean
-  isProduct?: boolean
-  hasSubmenu?: boolean
-  isActive?: boolean
+  children: React.ReactNode;
+  href: string;
+  isHome?: boolean;
+  isProduct?: boolean;
+  hasSubmenu?: boolean;
+  isActive?: boolean;
 }
+
+// Update the NavItem component styles to use UniversLightVU and 14px font size with wider spacing
 
 function NavItem({
   children,
@@ -142,8 +144,13 @@ function NavItem({
   return (
     <a
       href={href}
-      className={`px-2 py-1.5 ${isProduct ? "mx-5" : "mx-3"} text-sm lg:text-base font-medium relative group ${isProduct ? "text-red-600 border border-red-600 rounded-md" : "text-gray-800"
-        }`}
+      className={`px-2 py-1.5 ${
+        isProduct ? "mx-3" : "mx-2"
+      } text-sm font-medium relative group ${
+        isProduct
+          ? "text-red-600 border border-red-600 rounded-md"
+          : "text-gray-800"
+      }`}
     >
       <div className="flex items-center">
         {children}
@@ -166,46 +173,47 @@ function NavItem({
         </div>
       )}
     </a>
-  )
+  );
 }
 
+// Update ProductMenu component for the product button
 function ProductMenu({ isActive = false }) {
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
-  const productMenuRef = useRef<HTMLDivElement>(null)
-  const [dropdownPosition, setDropdownPosition] = useState({ left: 0 })
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const productMenuRef = useRef<HTMLDivElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ left: 0 });
 
   // Cập nhật vị trí của dropdown menu dựa trên vị trí của nút "SẢN PHẨM"
   useEffect(() => {
     if (productMenuRef.current) {
-      const rect = productMenuRef.current.getBoundingClientRect()
+      const rect = productMenuRef.current.getBoundingClientRect();
       setDropdownPosition({
         left: rect.left,
-      })
+      });
     }
-  }, [])
+  }, []);
 
   // Cập nhật lại vị trí khi cửa sổ thay đổi kích thước
   useEffect(() => {
     const handleResize = () => {
       if (productMenuRef.current) {
-        const rect = productMenuRef.current.getBoundingClientRect()
+        const rect = productMenuRef.current.getBoundingClientRect();
         setDropdownPosition({
           left: rect.left,
-        })
+        });
       }
-    }
+    };
 
-    window.addEventListener("resize", handleResize)
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="group relative" ref={productMenuRef}>
       <a
         href="/san-pham"
-        className="px-2 py-1.5 mx-5 text-sm lg:text-base font-medium relative text-red-600 border border-red-600 rounded-md"
+        className="px-2 py-1.5 mx-3 text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
       >
         SẢN PHẨM
       </a>
@@ -238,8 +246,12 @@ function ProductMenu({ isActive = false }) {
             >
               <a
                 href={item.href}
-                className={`px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${activeSubmenu === item.id ? "text-red-600" : "hover:text-red-600"
-                  }`}
+                className={`px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${
+                  activeSubmenu === item.id
+                    ? "text-red-600"
+                    : "hover:text-red-600"
+                }`}
+                style={{ fontFamily: "UniversLightVU" }}
               >
                 <span>{item.title}</span>
                 <ChevronRight className="w-4 h-4" />
@@ -253,7 +265,11 @@ function ProductMenu({ isActive = false }) {
                     {item.subMenu && item.subMenu.length > 0 ? (
                       item.subMenu.map((subItem) => (
                         <li key={subItem.id}>
-                          <a href={subItem.href} className="block px-4 py-2 hover:bg-gray-50">
+                          <a
+                            href={subItem.href}
+                            className="block px-4 py-2 hover:bg-gray-50"
+                            style={{ fontFamily: "UniversLightVU" }}
+                          >
                             {subItem.title}
                           </a>
                         </li>
@@ -261,7 +277,11 @@ function ProductMenu({ isActive = false }) {
                     ) : (
                       // If no submenu, repeat the parent item
                       <li>
-                        <a href={item.href} className="block px-4 py-2 hover:bg-gray-50">
+                        <a
+                          href={item.href}
+                          className="block px-4 py-2 hover:bg-gray-50"
+                          style={{ fontFamily: "UniversLightVU" }}
+                        >
                           {item.title}
                         </a>
                       </li>
@@ -274,25 +294,25 @@ function ProductMenu({ isActive = false }) {
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
 // Menu mobile
 function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState("")
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("");
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   // Xác định trang hiện tại dựa trên đường dẫn
   useEffect(() => {
-    const path = window.location.pathname
-    if (path === "/") setActiveItem("home")
-    else if (path.includes("/san-pham")) setActiveItem("products")
-    else if (path.includes("/gioi-thieu")) setActiveItem("about")
-    else if (path.includes("/tin-tuc")) setActiveItem("news")
-    else if (path.includes("/khuyen-mai")) setActiveItem("promotions")
-    else if (path.includes("/lien-he")) setActiveItem("contact")
-  }, [])
+    const path = window.location.pathname;
+    if (path === "/") setActiveItem("home");
+    else if (path.includes("/san-pham")) setActiveItem("products");
+    else if (path.includes("/gioi-thieu")) setActiveItem("about");
+    else if (path.includes("/tin-tuc")) setActiveItem("news");
+    else if (path.includes("/khuyen-mai")) setActiveItem("promotions");
+    else if (path.includes("/lien-he")) setActiveItem("contact");
+  }, []);
 
   return (
     <div className="lg:hidden">
@@ -307,7 +327,9 @@ function MobileMenu() {
 
       {/* Menu mobile */}
       <div
-        className={`fixed inset-0 bg-white z-50 transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"} flex flex-col`}
+        className={`fixed inset-0 bg-white z-50 transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        } flex flex-col`}
       >
         {/* Header menu */}
         <div className="flex justify-between items-center p-3 border-b">
@@ -321,7 +343,11 @@ function MobileMenu() {
                 0
               </span>
             </div>
-            <button onClick={() => setIsOpen(false)} className="p-2 text-gray-700" aria-label="Đóng menu">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 text-gray-700"
+              aria-label="Đóng menu"
+            >
               <X className="w-6 h-6" />
             </button>
           </div>
@@ -331,7 +357,10 @@ function MobileMenu() {
         <div className="p-3 pb-0 overflow-y-auto flex-1">
           <div className="text-gray-600 mb-3">ĐĂNG NHẬP</div>
 
-          <a href="/dang-ky" className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3">
+          <a
+            href="/dang-ky"
+            className="inline-block border border-gray-300 rounded px-4 py-2 text-center mb-3"
+          >
             ĐĂNG KÝ
           </a>
 
@@ -343,7 +372,9 @@ function MobileMenu() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               TRANG CHỦ
-              {activeItem === "home" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-700"></div>}
+              {activeItem === "home" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-700"></div>
+              )}
               {hoveredItem === "home" && activeItem !== "home" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -356,7 +387,9 @@ function MobileMenu() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               SẢN PHẨM
-              {activeItem === "products" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {activeItem === "products" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
               {hoveredItem === "products" && activeItem !== "products" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -369,7 +402,9 @@ function MobileMenu() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               GIỚI THIỆU
-              {activeItem === "about" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {activeItem === "about" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
               {hoveredItem === "about" && activeItem !== "about" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -382,7 +417,9 @@ function MobileMenu() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               TIN TỨC
-              {activeItem === "news" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {activeItem === "news" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
               {hoveredItem === "news" && activeItem !== "news" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -395,7 +432,9 @@ function MobileMenu() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               KHUYẾN MÃI
-              {activeItem === "promotions" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {activeItem === "promotions" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
               {hoveredItem === "promotions" && activeItem !== "promotions" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -408,7 +447,9 @@ function MobileMenu() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               LIÊN HỆ
-              {activeItem === "contact" && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>}
+              {activeItem === "contact" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
+              )}
               {hoveredItem === "contact" && activeItem !== "contact" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
@@ -425,77 +466,94 @@ function MobileMenu() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
+// Update auth & cart section styling to expand them further apart
+
 export default function Navbar() {
-  const [currentPath, setCurrentPath] = useState("")
+  const [currentPath, setCurrentPath] = useState("");
 
   // Xác định đường dẫn hiện tại khi component được tải
   useEffect(() => {
-    setCurrentPath(window.location.pathname)
+    setCurrentPath(window.location.pathname);
 
     // Theo dõi thay đổi đường dẫn
     const handleLocationChange = () => {
-      setCurrentPath(window.location.pathname)
-    }
+      setCurrentPath(window.location.pathname);
+    };
 
-    window.addEventListener("popstate", handleLocationChange)
+    window.addEventListener("popstate", handleLocationChange);
 
     // Ghi đè phương thức pushState để bắt sự kiện khi URL thay đổi
-    const originalPushState = window.history.pushState
+    const originalPushState = window.history.pushState;
     window.history.pushState = function (...args) {
-      originalPushState.apply(this, args)
-      handleLocationChange()
-    }
+      originalPushState.apply(this, args);
+      handleLocationChange();
+    };
 
     return () => {
-      window.removeEventListener("popstate", handleLocationChange)
-      window.history.pushState = originalPushState
-    }
-  }, [])
+      window.removeEventListener("popstate", handleLocationChange);
+      window.history.pushState = originalPushState;
+    };
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm">
       <div className="container mx-auto px-4 h-[82px] flex items-center justify-between">
-        {/* Logo */}
-        <div className="w-28 md:w-36 lg:w-40">
-          <img src="/bic-logo.png" alt="BIC Logo" width={150} height={38} className="h-auto" />
+        {/* Logo - dịch sang phải một chút */}
+        <div className="w-32 md:w-36 lg:w-40 pl-0 lg:pl-10">
+          <img
+            src="/bic-logo.png"
+            alt="BIC Logo"
+            width={150}
+            height={38}
+            className="h-auto"
+          />
         </div>
 
         {/* Navigation - hiển thị trên desktop */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 mx-2 xl:mx-4">
+        <nav className="hidden lg:flex items-center justify-center flex-1 mx-1 xl:mx-2">
           <NavItem href="/" isHome={true} isActive={currentPath === "/"}>
             TRANG CHỦ
           </NavItem>
-          <div className="h-5 w-px bg-gray-300"></div>
+          <div className="h-5 w-px bg-gray-300 mx-1"></div>
           <ProductMenu isActive={currentPath.includes("/san-pham")} />
-          <div className="h-5 w-px bg-gray-300"></div>
-          <NavItem href="/gioi-thieu" isActive={currentPath.includes("/gioi-thieu")}>
+          <div className="h-5 w-px bg-gray-300 mx-1"></div>
+          <NavItem
+            href="/gioi-thieu"
+            isActive={currentPath.includes("/gioi-thieu")}
+          >
             GIỚI THIỆU
           </NavItem>
-          <div className="h-5 w-px bg-gray-300"></div>
+          <div className="h-5 w-px bg-gray-300 mx-1"></div>
           <NavItem href="/tin-tuc" isActive={currentPath.includes("/tin-tuc")}>
             TIN TỨC
           </NavItem>
-          <div className="h-5 w-px bg-gray-300"></div>
-          <NavItem href="/khuyen-mai" isActive={currentPath.includes("/khuyen-mai")}>
+          <div className="h-5 w-px bg-gray-300 mx-1"></div>
+          <NavItem
+            href="/khuyen-mai"
+            isActive={currentPath.includes("/khuyen-mai")}
+          >
             KHUYẾN MÃI
           </NavItem>
-          <div className="h-5 w-px bg-gray-300"></div>
+          <div className="h-5 w-px bg-gray-300 mx-1"></div>
           <NavItem href="/lien-he" isActive={currentPath.includes("/lien-he")}>
             LIÊN HỆ
           </NavItem>
         </nav>
 
-        {/* Auth & Cart - hiển thị trên desktop */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-          <a href="/dang-nhap" className="px-2 xl:px-3 py-1.5 text-sm xl:text-base font-medium">
+        {/* Auth & Cart - dịch sang trái một chút */}
+        <div className="hidden lg:flex items-center gap-3 xl:gap-4 pr-4 lg:pr-10">
+          <a
+            href="/dang-nhap"
+            className="px-2 xl:px-3 py-1.5 text-sm font-medium"
+          >
             ĐĂNG NHẬP
           </a>
           <a
             href="/dang-ky"
-            className="px-2 xl:px-3 py-1.5 text-sm xl:text-base font-medium border border-gray-300 rounded-md"
+            className="px-2 xl:px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md"
           >
             ĐĂNG KÝ
           </a>
@@ -508,7 +566,7 @@ export default function Navbar() {
         </div>
 
         {/* Menu mobile - hiển thị trên tablet và mobile */}
-        <div className="flex lg:hidden items-center gap-4">
+        <div className="flex lg:hidden items-center gap-4 ml-auto">
           <div className="relative">
             <ShoppingCart className="w-5 h-5" />
             <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
@@ -522,6 +580,5 @@ export default function Navbar() {
       {/* Vạch đỏ ở dưới cùng của header */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-red-600 opacity-0"></div>
     </header>
-  )
+  );
 }
-

@@ -19,11 +19,17 @@ export default function AboutPage() {
       <div className="pt-[81px]">
         {/* Phần nội dung chính của trang Giới thiệu */}
         <section className="py-6 bg-white">
-          <div className="mx-[90px] px-[15px]">
+          <div className=" flex flex-col items-center">
+            <div className="max-w-6xl mx-auto px-4 py-8">
+                <div className="w-20 h-1 bg-black mb-1 mx-auto"></div>
+                    <h1 className="text-5xl font-bold text-red-600 text-center">Giới thiệu</h1>
+              </div>
+          </div>
+          <div className="mx-[90px] px-[15px] pt-[40px]" >
             <div className="flex justify-center mb-3">
               <img src="/bic-logo.png" alt="BIC Logo" className="h-28" />
             </div>
-            <h1 className="text-[45px] font-bold text-red-600 mb-3 text-center">Giới thiệu </h1>
+           
 
             <div className="prose max-w-none text-gray-700 space-y-3">
               <p className="mb-4 text-[20px]">
