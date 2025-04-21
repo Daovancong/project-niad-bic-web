@@ -1,16 +1,23 @@
-import type React from "react"
-import { Phone, MapPin, Mail } from "lucide-react"
+import type React from "react";
+import { Phone, MapPin, Mail } from "lucide-react";
 
 interface ContactCardProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-  extraInfo?: string
-  linkText?: string
-  linkUrl?: string
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  extraInfo?: string;
+  linkText?: string;
+  linkUrl?: string;
 }
 
-const ContactCard = ({ icon, title, description, extraInfo, linkText, linkUrl }: ContactCardProps) => {
+const ContactCard = ({
+  icon,
+  title,
+  description,
+  extraInfo,
+  linkText,
+  linkUrl,
+}: ContactCardProps) => {
   return (
     <div className="bg-gray-50 p-8 flex flex-col items-center text-center">
       <div className="text-red-600 mb-4">{icon}</div>
@@ -18,13 +25,16 @@ const ContactCard = ({ icon, title, description, extraInfo, linkText, linkUrl }:
       <p className="text-gray-600 mb-2">{description}</p>
       {extraInfo && <p className="text-gray-600 text-sm mb-2">{extraInfo}</p>}
       {linkText && linkUrl && (
-        <a href={linkUrl} className="text-blue-600 hover:underline text-sm">
+        <a
+          href={linkUrl}
+          className="text-black hover:underline text-sm font-bold"
+        >
           {linkText}
         </a>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default function Contact() {
   return (
@@ -33,7 +43,9 @@ export default function Contact() {
         {/* Tiêu đề */}
         <div className="flex flex-col items-center mb-12">
           <div className="w-12 h-0.5 bg-gray-400 mb-4"></div>
-          <h2 className="text-3xl font-bold text-red-600">Liên hệ ngay với chúng tôi</h2>
+          <h2 className="text-3xl font-bold text-red-600">
+            Liên hệ ngay với chúng tôi
+          </h2>
         </div>
 
         {/* Thông tin liên hệ */}
@@ -63,6 +75,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

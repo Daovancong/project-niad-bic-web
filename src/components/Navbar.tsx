@@ -4,119 +4,109 @@ import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { ShoppingCart, ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 
-// Dữ liệu menu đa cấp
+// Dữ liệu menu đa cấp với URL chính xác
 const productMenuData = [
   {
     id: "car",
     title: "Bảo hiểm ô tô",
-    href: "/bao-hiem-o-to",
+    href: "/danh-muc/bao-hiem-o-to-9.html",
     subMenu: [
       {
         id: "car-liability",
         title: "Bảo hiểm trách nhiệm dân sự chủ xe ô tô",
-        href: "/bao-hiem-trach-nhiem-dan-su-o-to",
+        href: "/san-pham/bao-hiem-trach-nhiem-dan-su-chu-xe-o-to",
       },
       {
         id: "car-physical",
         title: "Bảo hiểm vật chất ô tô",
-        href: "/bao-hiem-vat-chat-o-to",
+        href: "/san-pham/bao-hiem-vat-chat-o-to",
       },
     ],
   },
   {
     id: "motorcycle",
     title: "Bảo hiểm xe máy",
-    href: "/bao-hiem-xe-may",
+    href: "/danh-muc/bao-hiem-xe-may-10.html",
     subMenu: [
       {
         id: "motorcycle-liability",
         title: "Bảo hiểm trách nhiệm dân sự chủ xe máy",
-        href: "/bao-hiem-trach-nhiem-dan-su-xe-may",
+        href: "/san-pham/bao-hiem-tnds-xe-may",
       },
     ],
   },
   {
     id: "health",
     title: "Bảo hiểm sức khỏe",
-    href: "/bao-hiem-suc-khoe",
+    href: "/danh-muc/bao-hiem-suc-khoe-11.html",
     subMenu: [
       {
         id: "health-cancer",
         title: "Bảo hiểm bệnh ung thư",
-        href: "/bao-hiem-benh-ung-thu",
+        href: "/san-pham/bao-hiem-benh-ung-thu-phuc-tam-an",
       },
       {
         id: "health-accident",
         title: "Bảo hiểm tai nạn và sức khỏe cá nhân",
-        href: "/bao-hiem-tai-nan-va-suc-khoe-ca-nhan",
+        href: "/san-pham/bao-hiem-suc-khoe-tam-an",
       },
     ],
   },
   {
     id: "travel",
     title: "Bảo hiểm du lịch",
-    href: "/bao-hiem-du-lich",
+    href: "/danh-muc/bao-hiem-du-lich-13.html",
     subMenu: [
       {
         id: "travel-international",
         title: "Bảo hiểm du lịch quốc tế (ITI)",
-        href: "/bao-hiem-du-lich-quoc-te",
+        href: "/san-pham/bao-hiem-du-lich-quoc-te",
       },
       {
         id: "travel-domestic",
         title: "Bảo hiểm du lịch trong nước (TRV)",
-        href: "/bao-hiem-du-lich-trong-nuoc",
+        href: "/san-pham/bao-hiem-du-lich-trong-nuoc",
       },
       {
         id: "travel-accident",
         title: "Bảo hiểm tai nạn khách du lịch (TVC)",
-        href: "/bao-hiem-tai-nan-khach-du-lich",
+        href: "/san-pham/bao-hiem-tai-nan-khach-du-lich",
       },
     ],
   },
   {
     id: "accident",
     title: "Bảo hiểm tai nạn",
-    href: "/bao-hiem-tai-nan",
+    href: "/danh-muc/bao-hiem-tai-nan-12.html",
     subMenu: [
       {
         id: "accident-24h",
         title: "Bảo hiểm tai nạn con người 24/24",
-        href: "/bao-hiem-tai-nan-con-nguoi",
-      },
-      {
-        id: "accident-electric",
-        title: "Bảo hiểm tai nạn người sử dụng điện",
-        href: "/bao-hiem-tai-nan-nguoi-su-dung-dien",
-      },
-      {
-        id: "accident-extended",
-        title: "Bảo hiểm tai nạn mở rộng",
-        href: "/bao-hiem-tai-nan-mo-rong",
+        href: "/san-pham/bao-hiem-tai-nan-24-24",
       },
     ],
   },
   {
-    id: "home",
+    id: "property",
     title: "Bảo hiểm nhà tư nhân",
-    href: "/bao-hiem-nha-tu-nhan",
+    href: "/danh-muc/bao-hiem-nha-tu-nhan-14.html",
     subMenu: [
       {
-        id: "home-comprehensive",
+        id: "property-comprehensive",
         title: "Bảo hiểm toàn diện nhà tư nhân",
-        href: "/bao-hiem-toan-dien-nha-tu-nhan",
+        href: "/san-pham/bao-hiem-toan-dien-nha-tu-nhan",
       },
     ],
   },
   {
     id: "cyber",
     title: "Bảo hiểm an ninh mạng",
-    href: "/bao-hiem-an-ninh-mang",
+    href: "/danh-muc/bao-hiem-an-ninh-mang-15.html",
     subMenu: [
       {
         id: "cyber-security",
         title: "Bảo hiểm an ninh mạng",
-        href: "/bao-hiem-an-ninh-mang",
+        href: "/san-pham/bao-hiem-an-ninh-mang",
       },
     ],
   },
@@ -131,12 +121,9 @@ interface NavItemProps {
   isActive?: boolean;
 }
 
-// Update the NavItem component styles to use UniversLightVU and 14px font size with wider spacing
-
 function NavItem({
   children,
   href,
-  // isHome = false,
   isProduct = false,
   hasSubmenu = false,
   isActive = false,
@@ -144,8 +131,8 @@ function NavItem({
   return (
     <a
       href={href}
-      className={`px-2 py-1.5 ${
-        isProduct ? "mx-3" : "mx-2"
+      className={`lg:px-1.5 xl:px-2 py-1.5 ${
+        isProduct ? "lg:mx-2 xl:mx-3" : "lg:mx-1.5 xl:mx-2"
       } text-sm font-medium relative group ${
         isProduct
           ? "text-red-600 border border-red-600 rounded-md"
@@ -159,7 +146,7 @@ function NavItem({
 
       {/* Hiển thị chỉ báo cho trang đang active */}
       {isActive && (
-        <div className="absolute bottom-[-24px] left-0 w-full flex flex-col items-center">
+        <div className="absolute bottom-[-26px] left-0 w-full flex flex-col items-center">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
@@ -167,7 +154,7 @@ function NavItem({
 
       {/* Hiển thị chỉ báo khi hover cho các trang không active */}
       {!isActive && (
-        <div className="absolute bottom-[-24px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-[-26px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
@@ -176,11 +163,11 @@ function NavItem({
   );
 }
 
-// Update ProductMenu component for the product button
 function ProductMenu({ isActive = false }) {
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const productMenuRef = useRef<HTMLDivElement>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ left: 0 });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Cập nhật vị trí của dropdown menu dựa trên vị trí của nút "SẢN PHẨM"
   useEffect(() => {
@@ -209,23 +196,98 @@ function ProductMenu({ isActive = false }) {
     };
   }, []);
 
+  // Kiểm tra vị trí để điều chỉnh hướng hiển thị của dropdown cấp 2
+  useEffect(() => {
+    const checkSubmenuPosition = () => {
+      // Chỉ kiểm tra khi có activeSubmenu
+      if (activeSubmenu && productMenuRef.current) {
+        const submenuContainer = document.querySelector(
+          `[data-submenu="${activeSubmenu}"]`
+        ) as HTMLElement;
+        if (submenuContainer) {
+          const rect = submenuContainer.getBoundingClientRect();
+          const windowWidth = window.innerWidth;
+
+          // Nếu submenu sẽ vượt ra ngoài màn hình
+          if (rect.right > windowWidth) {
+            submenuContainer.style.left = "auto";
+            submenuContainer.style.right = "100%";
+          } else {
+            submenuContainer.style.left = "100%";
+            submenuContainer.style.right = "auto";
+          }
+        }
+      }
+    };
+
+    checkSubmenuPosition();
+    window.addEventListener("resize", checkSubmenuPosition);
+    return () => {
+      window.removeEventListener("resize", checkSubmenuPosition);
+    };
+  }, [activeSubmenu]);
+
+  // Xử lý click bên ngoài dropdown để đóng dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        productMenuRef.current &&
+        !productMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Reset activeSubmenu khi dropdown đóng
+  useEffect(() => {
+    if (!isDropdownOpen) {
+      setActiveSubmenu(null);
+    }
+  }, [isDropdownOpen]);
+
   return (
-    <div className="group relative" ref={productMenuRef}>
+    <div
+      ref={productMenuRef}
+      className="group relative"
+      onMouseEnter={() => {
+        if (window.innerWidth >= 1024) {
+          setIsDropdownOpen(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (window.innerWidth >= 1024) {
+          setIsDropdownOpen(false);
+        }
+      }}
+    >
       <a
         href="/san-pham"
-        className="px-2 py-1.5 mx-3 text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
+        className="lg:px-1.5 xl:px-2 py-1.5 lg:mx-2 xl:mx-3 text-sm font-medium relative text-red-600 border border-red-600 rounded-md"
+        onClick={(e) => {
+          // Chỉ ngăn chặn chuyển hướng trong trường hợp đặc biệt
+          if (window.innerWidth >= 1024 && isDropdownOpen) {
+            e.preventDefault();
+            setIsDropdownOpen(!isDropdownOpen);
+          }
+        }}
       >
         SẢN PHẨM
       </a>
 
       {/* Indicator for hover - đảm bảo căn chỉnh giống các mục khác */}
       {isActive ? (
-        <div className="absolute bottom-[-29px] left-0 w-full flex flex-col items-center">
+        <div className="absolute bottom-[-30px] left-0 w-full flex flex-col items-center">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
       ) : (
-        <div className="absolute bottom-[-29px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-[-30px] left-0 w-full flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
           <ChevronDown className="w-4 h-4 text-red-600" />
           <div className="w-full h-1 bg-red-600"></div>
         </div>
@@ -233,7 +295,9 @@ function ProductMenu({ isActive = false }) {
 
       {/* First level dropdown - positioned exactly at top of slider with correct horizontal position */}
       <div
-        className="fixed top-[82px] w-64 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
+        className={`fixed top-[82px] w-64 bg-white shadow-lg rounded-md ${
+          isDropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        } transition-all duration-300 z-50`}
         style={{ left: `${dropdownPosition.left}px` }}
       >
         <ul className="py-2">
@@ -241,25 +305,62 @@ function ProductMenu({ isActive = false }) {
             <li
               key={item.id}
               className="relative"
-              onMouseEnter={() => setActiveSubmenu(item.id)}
-              onMouseLeave={() => setActiveSubmenu(null)}
+              onMouseEnter={() => {
+                if (window.innerWidth >= 1024) {
+                  setActiveSubmenu(item.id);
+                }
+              }}
+              onMouseLeave={() => {
+                if (window.innerWidth >= 1024) {
+                  setActiveSubmenu(null);
+                }
+              }}
             >
               <a
                 href={item.href}
-                className={`px-4 py-2 hover:bg-gray-50 flex justify-between items-center ${
-                  activeSubmenu === item.id
-                    ? "text-red-600"
-                    : "hover:text-red-600"
-                }`}
-                style={{ fontFamily: "UniversLightVU" }}
+                className={`px-4 py-2 hover:bg-gray-50 flex justify-between items-center text-[15px] font-medium whitespace-nowrap ${
+                  activeSubmenu === item.id ? "text-red-600" : "text-gray-800"
+                } hover:text-red-600`}
+                onClick={(e) => {
+                  // Chỉ ngăn chặn khi click vào mũi tên, cho phép click vào text để đi đến trang
+                  if (
+                    item.subMenu &&
+                    item.subMenu.length > 0 &&
+                    e.target instanceof SVGElement
+                  ) {
+                    e.preventDefault();
+                    setActiveSubmenu(
+                      activeSubmenu === item.id ? null : item.id
+                    );
+                  }
+                }}
               >
-                <span>{item.title}</span>
-                <ChevronRight className="w-4 h-4" />
+                <span
+                  className="mr-2 cursor-pointer"
+                  onClick={(e) => {
+                    // Ngăn sự kiện nổi bọt để đảm bảo sự kiện không lên tới phần tử cha
+                    e.stopPropagation();
+                  }}
+                >
+                  {item.title}
+                </span>
+                <ChevronRight
+                  className="w-4 h-4 flex-shrink-0 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveSubmenu(
+                      activeSubmenu === item.id ? null : item.id
+                    );
+                  }}
+                />
               </a>
 
               {/* Second level dropdown - always show when parent is hovered */}
               {activeSubmenu === item.id && (
-                <div className="absolute left-full top-0 w-72 bg-white shadow-lg rounded-md">
+                <div
+                  className="absolute left-full top-0 w-[256px] bg-white shadow-lg rounded-md z-[60]"
+                  data-submenu={item.id}
+                >
                   <ul className="py-2">
                     {/* If submenu exists, show those items */}
                     {item.subMenu && item.subMenu.length > 0 ? (
@@ -267,8 +368,8 @@ function ProductMenu({ isActive = false }) {
                         <li key={subItem.id}>
                           <a
                             href={subItem.href}
-                            className="block px-4 py-2 hover:bg-gray-50"
-                            style={{ fontFamily: "UniversLightVU" }}
+                            className="block px-4 py-2 hover:bg-gray-50 text-[15px] font-medium text-gray-800 hover:text-red-600 whitespace-normal break-words"
+                            title={subItem.title}
                           >
                             {subItem.title}
                           </a>
@@ -279,8 +380,8 @@ function ProductMenu({ isActive = false }) {
                       <li>
                         <a
                           href={item.href}
-                          className="block px-4 py-2 hover:bg-gray-50"
-                          style={{ fontFamily: "UniversLightVU" }}
+                          className="block px-4 py-2 hover:bg-gray-50 text-[15px] font-medium text-gray-800 hover:text-red-600 whitespace-normal break-words"
+                          title={item.title}
                         >
                           {item.title}
                         </a>
@@ -307,7 +408,12 @@ function MobileMenu() {
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/") setActiveItem("home");
-    else if (path.includes("/san-pham")) setActiveItem("products");
+    else if (
+      path.includes("/san-pham") ||
+      path.includes("/danh-muc") ||
+      path.includes("/bao-hiem-")
+    )
+      setActiveItem("products");
     else if (path.includes("/gioi-thieu")) setActiveItem("about");
     else if (path.includes("/tin-tuc")) setActiveItem("news");
     else if (path.includes("/khuyen-mai")) setActiveItem("promotions");
@@ -334,7 +440,9 @@ function MobileMenu() {
         {/* Header menu */}
         <div className="flex justify-between items-center p-3 border-b">
           <div className="w-36">
-            <img src="/bic-logo.png" alt="BIC Logo" className="h-auto" />
+            <a href="/">
+              <img src="/bic-logo.png" alt="BIC Logo" className="h-auto" />
+            </a>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -373,7 +481,7 @@ function MobileMenu() {
             >
               TRANG CHỦ
               {activeItem === "home" && (
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-700"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
               )}
               {hoveredItem === "home" && activeItem !== "home" && (
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"></div>
@@ -469,8 +577,6 @@ function MobileMenu() {
   );
 }
 
-// Update auth & cart section styling to expand them further apart
-
 export default function Navbar() {
   const [currentPath, setCurrentPath] = useState("");
 
@@ -501,59 +607,67 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b z-50 shadow-sm">
       <div className="container mx-auto px-4 h-[82px] flex items-center justify-between">
-        {/* Logo - dịch sang phải một chút */}
-        <div className="w-32 md:w-36 lg:w-40 pl-0 lg:pl-10">
-          <img
-            src="/bic-logo.png"
-            alt="BIC Logo"
-            width={150}
-            height={38}
-            className="h-auto"
-          />
+        {/* Logo - thu về phía phải một chút */}
+        <div className="w-24 md:w-32 lg:w-24 ml-0 lg:ml-6">
+          <a href="/">
+            <img
+              src="/bic-logo.png"
+              alt="BIC Logo"
+              width={150}
+              height={38}
+              className="h-auto"
+            />
+          </a>
         </div>
 
         {/* Navigation - hiển thị trên desktop */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 mx-1 xl:mx-2">
+        <nav className="hidden lg:flex items-center justify-center flex-1 lg:space-x-0.5 xl:space-x-1">
           <NavItem href="/" isHome={true} isActive={currentPath === "/"}>
             TRANG CHỦ
           </NavItem>
-          <div className="h-5 w-px bg-gray-300 mx-1"></div>
-          <ProductMenu isActive={currentPath.includes("/san-pham")} />
-          <div className="h-5 w-px bg-gray-300 mx-1"></div>
+          <div className="h-5 w-px bg-gray-300"></div>
+          <ProductMenu
+            isActive={
+              currentPath.includes("/san-pham") ||
+              currentPath.includes("/danh-muc") ||
+              currentPath.includes("/bao-hiem-")
+            }
+          />
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem
             href="/gioi-thieu"
             isActive={currentPath.includes("/gioi-thieu")}
           >
             GIỚI THIỆU
           </NavItem>
-          <div className="h-5 w-px bg-gray-300 mx-1"></div>
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem href="/tin-tuc" isActive={currentPath.includes("/tin-tuc")}>
             TIN TỨC
           </NavItem>
-          <div className="h-5 w-px bg-gray-300 mx-1"></div>
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem
             href="/khuyen-mai"
             isActive={currentPath.includes("/khuyen-mai")}
           >
             KHUYẾN MÃI
           </NavItem>
-          <div className="h-5 w-px bg-gray-300 mx-1"></div>
+          <div className="h-5 w-px bg-gray-300"></div>
           <NavItem href="/lien-he" isActive={currentPath.includes("/lien-he")}>
             LIÊN HỆ
           </NavItem>
         </nav>
 
-        {/* Auth & Cart - dịch sang trái một chút */}
-        <div className="hidden lg:flex items-center gap-3 xl:gap-4 pr-4 lg:pr-10">
+        {/* Auth & Cart - thu về phía trái một chút */}
+        <div className="hidden lg:flex items-center lg:gap-2 xl:gap-3 lg:pr-6 xl:pr-10 mr-0 lg:-mr-6">
           <a
             href="/dang-nhap"
-            className="px-2 xl:px-3 py-1.5 text-sm font-medium"
+            className="lg:px-1.5 xl:px-2 py-1.5 text-sm font-medium"
           >
             ĐĂNG NHẬP
           </a>
           <a
             href="/dang-ky"
-            className="px-2 xl:px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md"
+            className="lg:px-1.5 xl:px-2 py-1.5 text-sm font-medium border border-gray-300 rounded-md"
           >
             ĐĂNG KÝ
           </a>

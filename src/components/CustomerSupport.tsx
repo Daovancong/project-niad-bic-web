@@ -1,37 +1,46 @@
-import type React from "react"
-import { Car, Building2, Phone, FileSearch } from "lucide-react"
+import type React from "react";
+import { Car, Building2, Phone, FileSearch, CircleHelp } from "lucide-react";
 
 interface SupportCardProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-  isActive?: boolean
-  href: string
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  isActive?: boolean;
+  href: string;
 }
 
-const SupportCard = ({ icon, title, description, isActive = false, href }: SupportCardProps) => {
+const SupportCard = ({
+  icon,
+  title,
+  description,
+  isActive = false,
+  href,
+}: SupportCardProps) => {
   return (
     <a
       href={href}
-      className={`bg-white p-6 flex flex-col items-center text-center relative transition-all group ${isActive ? "shadow-sm" : ""
-        }`}
+      className={`bg-white p-6 flex flex-col items-center text-center relative transition-all group ${
+        isActive ? "shadow-sm" : ""
+      }`}
       style={{ height: "280px", width: "100%" }}
     >
-      <div className="text-red-600 mb-4 h-16 flex items-center justify-center">{icon}</div>
+      <div className="text-red-600 mb-4 h-16 flex items-center justify-center">
+        {icon}
+      </div>
 
       <h3 className="font-medium text-gray-700 mb-2">{title}</h3>
 
       <p className="text-sm text-gray-600 mb-4 px-2">{description}</p>
 
       <div className="text-gray-400 mt-auto mb-2">
-        <span className="text-xl">&rsaquo;</span>
+        <span className="text-[40px]">&rsaquo;</span>
       </div>
 
       {/* Vạch đỏ khi hover */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
     </a>
-  )
-}
+  );
+};
 
 export default function CustomerSupport() {
   const supportItems = [
@@ -39,7 +48,8 @@ export default function CustomerSupport() {
       id: "garage",
       icon: <Car className="w-14 h-14 stroke-[1.5] text-red-600" />,
       title: "Mạng lưới Gara",
-      description: "Hệ thống, danh sách các Garage sửa chữa xe có liên kết với BIC trên khắp cả nước.",
+      description:
+        "Hệ thống, danh sách các Garage sửa chữa xe có liên kết với BIC trên khắp cả nước.",
       href: "/ho-tro/mang-luoi-gara",
       isActive: false,
     },
@@ -47,7 +57,8 @@ export default function CustomerSupport() {
       id: "hospital",
       icon: <Building2 className="w-14 h-14 stroke-[1.5] text-red-600" />,
       title: "Mạng lưới bệnh viện liên kết",
-      description: "Hệ thống, danh sách các bệnh viện có liên kết với BIC trên khắp cả nước.",
+      description:
+        "Hệ thống, danh sách các bệnh viện có liên kết với BIC trên khắp cả nước.",
       href: "/ho-tro/mang-luoi-benh-vien",
       isActive: true,
     },
@@ -55,20 +66,14 @@ export default function CustomerSupport() {
       id: "nationwide",
       icon: <Phone className="w-14 h-14 stroke-[1.5] text-red-600" />,
       title: "Mạng lưới toàn quốc",
-      description: "Phòng kinh doanh khu vực sẵn sàng phục vụ khách hàng BIC trên toàn quốc",
+      description:
+        "Phòng kinh doanh khu vực sẵn sàng phục vụ khách hàng BIC trên toàn quốc",
       href: "/ho-tro/mang-luoi-toan-quoc",
       isActive: false,
     },
     {
       id: "faq",
-      icon: (
-        <div className="relative">
-          <div className="w-10 h-10 bg-red-600 rounded-full absolute top-1 left-1"></div>
-          <div className="w-10 h-10 border-2 border-red-600 rounded-full relative flex items-center justify-center">
-            <span className="text-red-600 font-bold text-xl">?</span>
-          </div>
-        </div>
-      ),
+      icon: <CircleHelp className="w-14 h-14 stroke-[1.5] text-red-600" />,
       title: "Các câu hỏi thường gặp",
       description: "Giải đáp các thắc mắc của khách hàng về sản phẩm & dịch vụ",
       href: "/ho-tro/cau-hoi-thuong-gap",
@@ -76,16 +81,10 @@ export default function CustomerSupport() {
     },
     {
       id: "claims",
-      icon: (
-        <div className="relative">
-          <div className="w-10 h-10 bg-red-600 rounded-full absolute top-1 left-1"></div>
-          <div className="w-10 h-10 border-2 border-red-600 rounded-full relative flex items-center justify-center">
-            <span className="text-red-600 font-bold text-xl">?</span>
-          </div>
-        </div>
-      ),
+      icon: <CircleHelp className="w-14 h-14 stroke-[1.5] text-red-600" />,
       title: "Yêu cầu / Truy vấn bồi thường online",
-      description: "Hỗ trợ Khách hàng tra cứu thông tin/theo dõi tình trạng hồ sơ bồi thường 24/7",
+      description:
+        "Hỗ trợ Khách hàng tra cứu thông tin/theo dõi tình trạng hồ sơ bồi thường 24/7",
       href: "/ho-tro/truy-van-boi-thuong",
       isActive: false,
     },
@@ -93,16 +92,19 @@ export default function CustomerSupport() {
       id: "certificate",
       icon: <FileSearch className="w-14 h-14 stroke-[1.5] text-red-600" />,
       title: "Tra cứu Giấy chứng nhận bảo hiểm",
-      description: "Hỗ trợ khách hàng tra cứu thông tin Giấy chứng nhận bảo hiểm đã tham gia tại BIC",
+      description:
+        "Hỗ trợ khách hàng tra cứu thông tin Giấy chứng nhận bảo hiểm đã tham gia tại BIC",
       href: "/ho-tro/tra-cuu-giay-chung-nhan",
       isActive: false,
     },
-  ]
+  ];
 
   return (
     <section className="py-16 bg-gray-100">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-center text-red-600 text-3xl font-bold mb-4">Hỗ trợ khách hàng</h2>
+        <h2 className="text-center text-red-600 text-3xl font-bold mb-4">
+          Hỗ trợ khách hàng
+        </h2>
 
         <div className="flex justify-center mb-12">
           <div className="w-32 h-1 bg-red-600"></div>
@@ -122,6 +124,5 @@ export default function CustomerSupport() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
